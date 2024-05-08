@@ -8,7 +8,7 @@ export default function App() {
       <Text className = "text-3xl">Mobile App Dev!</Text>
       <StatusBar style="auto" />
       <Link href="profile" style={{color: 'blue'}}>
-        <Text>Profile</Text>
+        <Text>Go To Profile</Text>
       </Link>
     </View>
   );
