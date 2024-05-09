@@ -1,4 +1,4 @@
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, ImageSourcePropType } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import { Redirect, Tabs } from "expo-router";
 import React from 'react'
@@ -8,7 +8,7 @@ const TabIcon = ({ icon, color, name, focused }: { icon: string, color: string, 
   return (
     <View className="flex items-center justify-center gap-2">
       <Image
-        source={{ uri: icon }}
+        source={icon as ImageSourcePropType}
         resizeMode="contain"
         tintColor={color}
         className="w-6 h-6"
