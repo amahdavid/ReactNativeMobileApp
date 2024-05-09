@@ -1,8 +1,10 @@
-import { View, Text, ScrollView, Image } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { images } from '@/constants'
-import FormField from '@/components/FormField'
-import React, { useState } from 'react'
+import { View, Text, ScrollView, Image } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { images } from "@/constants";
+import { Link } from "expo-router";
+import FormField from "@/components/FormField";
+import React, { useState } from "react";
+import CustomButton from "@/components/CustomButton";
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -10,40 +12,61 @@ const Login = () => {
     password: "",
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const submit = () => {
+    console.log(form);
+  };
+
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView>
         <View className="w-full justify-center h-full px-4 my-6">
           <Image
-          source={images.logo}
-          resizeMode='contain'
-          className="w-[115px] h-[35px]"
+            source={images.logo}
+            resizeMode="contain"
+            className="w-[115px] h-[35px]"
           />
 
           <Text className="text-2xl text-white text-semibold mt-10 font-psemibold">
-            Sign Up for Aora
+            Login to Aora
           </Text>
 
-          <FormField 
+          <FormField
             title="Email"
             value={form.email}
-            handleChangeText={(value) => setForm({...form, email: value})}
+            handleChangeText={(value) => setForm({ ...form, email: value })}
             otherStyles="mt-7"
             keyboardType="email-address"
           />
 
-          <FormField 
+          <FormField
             title="Password"
             value={form.password}
-            handleChangeText={(value) => setForm({...form, password: value})}
+            handleChangeText={(value) => setForm({ ...form, password: value })}
             otherStyles="mt-4"
             secureTextEntry={true}
           />
 
+          <CustomButton
+            title="Login"
+            containerStyle="mt-7"
+            handlePress={() => {
+              submit();
+            }}
+            isLoading={isSubmitting}
+          />
+
+          <View className="justify-center pt-5 flex-row gap-2">
+            <Text className="text-lg text-white text-center mt-7">
+              Don't have an account?{" "}
+            </Text>
+            <Link href="/signUp" className="text-lg font-psemibold text-secondary">Sign Up</Link>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
