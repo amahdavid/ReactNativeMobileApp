@@ -47,7 +47,7 @@ export default function App() {
 
           <CustomButton 
             title="Get Started"
-            handlePress={() => {router.push("/signUp")}}
+            handlePress={() => {router.push("/login")}}
             containerStyle="w-full mt-7"
           />
         </View>
