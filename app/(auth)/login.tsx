@@ -1,10 +1,11 @@
-import { View, Text, ScrollView, Image } from "react-native";
+import { View, Text, ScrollView, Image, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "@/constants";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import FormField from "@/components/FormField";
 import React, { useState } from "react";
 import CustomButton from "@/components/CustomButton";
+import { signIn } from "@/lib/appwrite";
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -14,8 +15,26 @@ const Login = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const submit = () => {
+  const handleChangeEmail = (value: string) => {
+    const formattedEmail = value.charAt(0).toLowerCase() + value.slice(1);
+    setForm({ ...form, email: formattedEmail });
+  };
+
+  const submit = async () => {
     console.log(form);
+    if (!form.email || !form.password) {
+      alert("Please fill all fields");
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      await signIn(form.email, form.password);
+      router.replace("/home")
+    } catch (error: any) {
+      Alert.alert("Error", error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -35,7 +54,7 @@ const Login = () => {
           <FormField
             title="Email"
             value={form.email}
-            handleChangeText={(value) => setForm({ ...form, email: value })}
+            handleChangeText={handleChangeEmail}
             otherStyles="mt-7"
             keyboardType="email-address"
           />

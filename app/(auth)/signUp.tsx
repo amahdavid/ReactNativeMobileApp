@@ -1,10 +1,10 @@
-import { View, Text, ScrollView, Image } from "react-native";
+import { View, Text, ScrollView, Image, Alert } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "@/constants";
 import FormField from "@/components/FormField";
 import CustomButton from "@/components/CustomButton";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { createUser } from "@/lib/appwrite";
 
 const SignUp = () => {
@@ -15,11 +15,49 @@ const SignUp = () => {
     password: "",
   });
 
+  const handleChangeEmail = (value: string) => {
+    const formattedEmail = value.charAt(0).toLowerCase() + value.slice(1);
+    setForm({ ...form, email: formattedEmail });
+  };
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const submit = () => {
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+  }
+
+  const validatePassword = (password: string) => {
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    return passwordRegex.test(password);
+  };
+
+  const submit = async () => {
     console.log(form);
-    createUser();
+    if (!form.firstName || !form.lastName || !form.email || !form.password) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    if (!validateEmail(form.email)) {
+      alert("Please enter a valid email address");
+      return;
+    }
+
+    if (!validatePassword(form.password)) {
+      alert("Password must contain at least 8 characters, including letters and numbers");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await createUser(form.firstName, form.lastName, form.email, form.password);
+      router.replace("/home")
+    } catch (error: any) {
+      Alert.alert("Error", error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -53,7 +91,7 @@ const SignUp = () => {
           <FormField
             title="Email"
             value={form.email}
-            handleChangeText={(value) => setForm({ ...form, email: value })}
+            handleChangeText={handleChangeEmail}
             otherStyles="mt-7"
             keyboardType="email-address"
           />
