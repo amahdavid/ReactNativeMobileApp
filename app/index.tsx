@@ -20,7 +20,7 @@ export default function App() {
       >
         <View className="w-full flex justify-center items-center h-full px-4">
           <Image
-            source={images.foodie}
+            source={images.favicon}
             className="w-[130px] h-[84px]"
             resizeMode="contain"
           />
