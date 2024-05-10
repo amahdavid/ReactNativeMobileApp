@@ -7,6 +7,16 @@ import CustomButton from "@/components/CustomButton";
 import { Link, router } from "expo-router";
 import axios from "axios";
 
+const validateEmail = (email: string) => {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return emailRegex.test(email);
+};
+
+const validatePassword = (password: string) => {
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+  return passwordRegex.test(password);
+};
+
 const SignUp = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -20,16 +30,6 @@ const SignUp = () => {
   const handleChangeEmail = (value: string) => {
     const formattedEmail = value.charAt(0).toLowerCase() + value.slice(1);
     setForm({ ...form, email: formattedEmail });
-  };
-
-  const validateEmail = (email: string) => {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return emailRegex.test(email);
-  };
-
-  const validatePassword = (password: string) => {
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-    return passwordRegex.test(password);
   };
 
   const submit = async () => {
