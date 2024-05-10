@@ -5,9 +5,13 @@ import { images } from "@/constants";
 import FormField from "@/components/FormField";
 import CustomButton from "@/components/CustomButton";
 import { Link, router } from "expo-router";
-import { createUser } from "@/lib/appwrite";
+import { createUser, getCurrentUser } from "@/lib/appwrite";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 const SignUp = () => {
+  const { setUser, setIsLogged } = useGlobalContext();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -20,7 +24,6 @@ const SignUp = () => {
     setForm({ ...form, email: formattedEmail });
   };
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -52,6 +55,10 @@ const SignUp = () => {
     setIsSubmitting(true);
     try {
       await createUser(form.firstName, form.lastName, form.email, form.password);
+      const result = await getCurrentUser();
+      setUser(result);
+      setIsLogged(true);
+      
       router.replace("/home")
     } catch (error: any) {
       Alert.alert("Error", error.message);
