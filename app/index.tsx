@@ -46,7 +46,7 @@ export default function App() {
 
           <CustomButton 
             title="Get Started"
-            handlePress={() => {router.push("/home")}} // change this back to /login when you are done
+            handlePress={() => {router.push("/signUp")}} // change this back to /login when you are done
             containerStyle="w-full mt-7"
           />
         </View>
