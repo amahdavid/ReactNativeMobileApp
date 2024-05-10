@@ -33,6 +33,32 @@ app.post("/api/signup", (req, res) => {
   });
 });
 
+app.post("/api/signin", (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    res.status(400).send("Please fill all the fields");
+    return;
+  }
+
+  // more validation can be added here
+
+  const query = `SELECT * FROM users WHERE email = '${email}' AND password = '${password}'`;
+  connection.query(query, (err, result) => {
+    if (err) {
+      res.status(500).send("Server error");
+      return;
+    }
+
+    if (result.length === 0) {
+      res.status(401).send("Invalid email or password");
+      return;
+    }
+
+    res.status(200).send("Login successful");
+  });
+});
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });

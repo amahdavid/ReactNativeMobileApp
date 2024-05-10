@@ -5,6 +5,7 @@ import { Link, router } from "expo-router";
 import FormField from "@/components/FormField";
 import React, { useState } from "react";
 import CustomButton from "@/components/CustomButton";
+import axios from "axios";
 
 const Login = () => {
 
@@ -27,6 +28,16 @@ const Login = () => {
       return;
     }
     setIsSubmitting(true);
+
+    try {
+      const response = await axios.post("http://localhost:3000/api/signin", form);
+      console.log(response);
+      router.replace("/home");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
