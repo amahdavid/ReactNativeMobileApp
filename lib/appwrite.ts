@@ -1,3 +1,4 @@
+import Query from "@/app/search/[query]";
 import { Client, Account, ID, Avatars, Databases } from "react-native-appwrite";
 
 export const appwriteConfig = {
@@ -27,8 +28,7 @@ export const createUser = async (firstName: string, lastName: string, email: any
             ID.unique(),
             email,
             password,
-            firstName,
-            lastName
+            firstName + " " + lastName        
         );
 
         if (!newAccount) throw new Error("Account not created");
@@ -54,10 +54,30 @@ export const createUser = async (firstName: string, lastName: string, email: any
 };
 
 
-export async function signIn(email: any, password: string) {
+export const signIn= async (email: any, password: string) => {
     try {
         const session = await account.createEmailPasswordSession(email, password);
         return session;
+    } catch (error) {
+        console.log(error);
+        throw new Error(String(error));
+    }
+}
+
+export const getCurrentUser = async () => {
+    try {
+        const currentAccount = await account.get();
+        if(!currentAccount) throw new Error("Account not found");
+
+        const currentUser = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.userCollectionId,
+            [Query.equal("accountId", currentAccount.$id)]
+        );
+
+        if (!currentUser) throw new Error("User not found");
+        return currentUser.documents[0];
+
     } catch (error) {
         console.log(error);
         throw new Error(String(error));

@@ -1,10 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useEffect } from 'react'
-import { SplashScreen, Stack } from 'expo-router'
-import { useFonts } from 'expo-font'
-import 'react-native-reanimated'
+import { StyleSheet, Text, View } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import React, { useEffect } from "react";
+import { SplashScreen, Stack } from "expo-router";
+import { useFonts } from "expo-font";
+import "react-native-reanimated";
+import GlobalProvider from "@/context/GlobalProvider";
 
-SplashScreen.preventAutoHideAsync()
+SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
   const [fontsLoaded, error] = useFonts({
@@ -23,16 +25,19 @@ const RootLayout = () => {
     if (error) throw error;
 
     if (fontsLoaded) SplashScreen.hideAsync();
-  }, [fontsLoaded, error])
+  }, [fontsLoaded, error]);
 
   return (
-    <Stack>
-      <Stack.Screen name = "index" options = {{headerShown: false}} />
-      <Stack.Screen name = "(auth)" options = {{headerShown: false}} />
-      <Stack.Screen name = "(tabs)" options = {{headerShown: false}} />
-      <Stack.Screen name = "search/[query]" options = {{headerShown: false}} />
-    </Stack>
-)
-}
+    <GlobalProvider>
+      <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        {/* <Stack.Screen name="search/[query]" options={{ headerShown: false }} /> */}
+      </Stack>
+      <StatusBar backgroundColor="#161622" style="light"/>
+    </GlobalProvider>
+  );
+};
 
-export default RootLayout
+export default RootLayout;
