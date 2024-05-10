@@ -5,10 +5,8 @@ import { Link, router } from "expo-router";
 import FormField from "@/components/FormField";
 import React, { useState } from "react";
 import CustomButton from "@/components/CustomButton";
-import { getCurrentUser, signIn } from "@/lib/appwrite";
-import { useGlobalContext } from "@/context/GlobalProvider";
+
 const Login = () => {
-  const { setUser, setIsLoggedIn } = useGlobalContext();
 
   const [form, setForm] = useState({
     email: "",
@@ -29,21 +27,6 @@ const Login = () => {
       return;
     }
     setIsSubmitting(true);
-    try {
-
-      await signIn(form.email, form.password);
-      const result = await getCurrentUser();
-      setUser(result)
-      setIsLoggedIn(true)
-
-      Alert.alert("Success", "User signed in successfully");
-      router.replace("/home")
-
-    } catch (error: any) {
-      Alert.alert("Error", error.message);
-    } finally {
-      setIsSubmitting(false);
-    }
   };
 
   return (

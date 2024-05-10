@@ -5,11 +5,9 @@ import { images } from "@/constants";
 import FormField from "@/components/FormField";
 import CustomButton from "@/components/CustomButton";
 import { Link, router } from "expo-router";
-import { createUser, getCurrentUser } from "@/lib/appwrite";
-import { useGlobalContext } from "@/context/GlobalProvider";
+import axios from "axios";
 
 const SignUp = () => {
-  const { setUser, setIsLogged } = useGlobalContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [form, setForm] = useState({
@@ -24,11 +22,10 @@ const SignUp = () => {
     setForm({ ...form, email: formattedEmail });
   };
 
-
   const validateEmail = (email: string) => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email);
-  }
+  };
 
   const validatePassword = (password: string) => {
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
@@ -48,21 +45,20 @@ const SignUp = () => {
     }
 
     if (!validatePassword(form.password)) {
-      alert("Password must contain at least 8 characters, including letters and numbers");
+      alert(
+        "Password must contain at least 8 characters, including letters and numbers"
+      );
       return;
     }
 
     setIsSubmitting(true);
+
     try {
-      await createUser(form.firstName, form.lastName, form.email, form.password);
-      const result = await getCurrentUser();
-      setUser(result);
-      setIsLogged(true);
-      
-      router.replace("/home")
-    } catch (error: any) {
-      Alert.alert("Error", error.message);
-    } finally {
+      const response = await axios.post("https://127.0.0.1/api/signup", form);
+      console.log(response);
+      setIsSubmitting(false);
+    } catch (error) {
+      console.log(error);
       setIsSubmitting(false);
     }
   };
