@@ -8,7 +8,6 @@ import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
-
   useEffect(() => {
     checkLoggedIn();
   }, []);
@@ -23,7 +22,7 @@ export default function App() {
       console.error("Error checking logged in status:", error);
     }
   };
-  
+
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView
@@ -53,21 +52,20 @@ export default function App() {
           </View>
 
           <Text className="text-sm font-pregular text-gray-100 mt-7 text-center">
-            Where Creativity Meets Innovation: Embark on a Journey of Limitless
-            Exploration with Aora
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rem
+            exercitationem porro quod sapiente quisquam eos numquam.
           </Text>
 
-          <CustomButton 
+          <CustomButton
             title="Get Started"
-            handlePress={() => {router.push("/login")}}
+            handlePress={() => {
+              router.push("/login");
+            }}
             containerStyle="w-full mt-7"
           />
         </View>
-        </ScrollView>
-        <StatusBar
-          backgroundColor="#161622"
-          style="light"
-        />
+      </ScrollView>
+      <StatusBar backgroundColor="#161622" style="light" />
     </SafeAreaView>
   );
 }
