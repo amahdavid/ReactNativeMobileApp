@@ -1,5 +1,5 @@
 import { images } from "@/constants";
-import { Link, router } from "expo-router";
+import { Link, router, Redirect } from "expo-router";
 import FormField from "@/components/FormField";
 import CustomButton from "@/components/CustomButton";
 import axios from "axios";
@@ -115,4 +115,4 @@ export const useSignup = () => {
   };
 };
 
-export { images, Link, router, FormField, CustomButton, axios, AsyncStorage };
+export { images, Link, router, FormField, CustomButton, axios, AsyncStorage, Redirect };

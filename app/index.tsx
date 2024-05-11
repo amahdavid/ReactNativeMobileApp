@@ -1,11 +1,9 @@
 import { Text, View, Image, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { Redirect, router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { images } from "@/constants";
-import CustomButton from "@/components/CustomButton";
 import { useEffect } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import jwt, { jwtDecode } from "jwt-decode";
+import { CustomButton, AsyncStorage, images, router, Redirect } from "@/utils/authUtils"
 
 export default function App() {
   useEffect(() => {
@@ -16,6 +14,12 @@ export default function App() {
     try {
       const token = await AsyncStorage.getItem("token");
       if (token) {
+        const decodedToken = jwtDecode(token) as jwt.JwtPayload;
+        if (decodedToken && decodedToken.exp && decodedToken.exp * 1000 < Date.now()) {
+          await AsyncStorage.removeItem("token");
+          router.replace("/login");
+        }
+      } else {
         router.replace("/home");
       }
     } catch (error) {
