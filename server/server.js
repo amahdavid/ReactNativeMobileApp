@@ -2,9 +2,12 @@ const express = require("express");
 const mysql = require("mysql");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
 const app = express();
 const port = 3000;
+const secretKey = crypto.randomBytes(64).toString('hex');
 
 app.use(bodyParser.json());
 
@@ -28,17 +31,14 @@ const connection = mysql.createConnection({
 app.post("/api/signup", async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
 
-  // Validate input fields
   if (!firstName || !lastName || !email || !password) {
     return res.status(400).send("Please fill all the fields");
   }
 
-  // Validate email format
   if (!validateEmail(email)) {
     return res.status(400).send("Invalid email address");
   }
 
-  // Validate password strength
   if (!validatePassword(password)) {
     return res
       .status(400)
@@ -47,10 +47,8 @@ app.post("/api/signup", async (req, res) => {
       );
   }
 
-  // Hash the password
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  // Check if email is already registered
   const emailExistsQuery = `SELECT * FROM users WHERE email = ?`;
   connection.query(emailExistsQuery, [email], (err, result) => {
     if (err) {
@@ -61,7 +59,6 @@ app.post("/api/signup", async (req, res) => {
       return res.status(400).send("Email address already registered");
     }
 
-    // Insert new user into the database
     const insertUserQuery = `INSERT INTO users (firstName, lastName, email, password) VALUES (?, ?, ?, ?)`;
     connection.query(
       insertUserQuery,
@@ -80,12 +77,10 @@ app.post("/api/signup", async (req, res) => {
 app.post("/api/signin", async (req, res) => {
   const { email, password } = req.body;
 
-  // Validate input fields
   if (!email || !password) {
     return res.status(400).send("Please fill all the fields");
   }
 
-  // Check if email exists
   const getUserQuery = `SELECT * FROM users WHERE email = ?`;
   connection.query(getUserQuery, [email], async (err, result) => {
     if (err) {
@@ -96,14 +91,19 @@ app.post("/api/signin", async (req, res) => {
       return res.status(401).send("Invalid email or password");
     }
 
-    // Compare password hashes
     const user = result[0];
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
       return res.status(401).send("Invalid email or password");
     }
 
-    res.status(200).send("Login successful");
+    const token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: '1h' });
+    jwt.verify(token, secretKey, (err, decoded) => {
+      if (err) {
+        return res.status(401).send("Invalid token");
+      }
+    });
+    res.status(200).json({ token });
   });
 });
 

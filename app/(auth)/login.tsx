@@ -3,18 +3,33 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "@/constants";
 import { Link, router } from "expo-router";
 import FormField from "@/components/FormField";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomButton from "@/components/CustomButton";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  useEffect(() => {
+    checkLoggedIn();
+  }, []);
+
+  const checkLoggedIn = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      if (token) {
+        router.replace("/home");
+      }
+    } catch (error) {
+      console.error("Error checking logged in status:", error);
+    }
+  };
 
   const handleChangeEmail = (value: string) => {
     const formattedEmail = value.charAt(0).toLowerCase() + value.slice(1);
@@ -31,10 +46,12 @@ const Login = () => {
 
     try {
       const response = await axios.post("http://localhost:3000/api/signin", form);
-      console.log(response);
+      const token = response.data.token;
+      await AsyncStorage.setItem("token", token);
       router.replace("/home");
     } catch (error) {
       console.log(error);
+      console.error("Token is null or undefined");
     } finally {
       setIsSubmitting(false);
     }

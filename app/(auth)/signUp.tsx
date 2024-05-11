@@ -54,8 +54,7 @@ const SignUp = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await axios.post("http://localhost:3000/api/signup", form);
-      console.log(response);
+      await axios.post("http://localhost:3000/api/signup", form);
       router.replace("/home")
     } catch (error) {
       console.log(error);
