@@ -1,67 +1,10 @@
 import { View, Text, ScrollView, Image, Alert } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { images } from "@/constants";
-import FormField from "@/components/FormField";
-import CustomButton from "@/components/CustomButton";
-import { Link, router } from "expo-router";
-import axios from "axios";
-
-const validateEmail = (email: string) => {
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  return emailRegex.test(email);
-};
-
-const validatePassword = (password: string) => {
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-  return passwordRegex.test(password);
-};
+import { images, Link, FormField, CustomButton, useSignup } from "@/utils/authUtils";
 
 const SignUp = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const [form, setForm] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-  });
-
-  const handleChangeEmail = (value: string) => {
-    const formattedEmail = value.charAt(0).toLowerCase() + value.slice(1);
-    setForm({ ...form, email: formattedEmail });
-  };
-
-  const submit = async () => {
-    console.log(form);
-    if (!form.firstName || !form.lastName || !form.email || !form.password) {
-      alert("Please fill all fields");
-      return;
-    }
-
-    if (!validateEmail(form.email)) {
-      alert("Please enter a valid email address");
-      return;
-    }
-
-    if (!validatePassword(form.password)) {
-      alert(
-        "Password must contain at least 8 characters, including letters and numbers"
-      );
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    try {
-      await axios.post("http://localhost:3000/api/signup", form);
-      router.replace("/home")
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const { isSubmitting, form, handleChangeEmail, handleChangeText, submit } = useSignup();
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -80,14 +23,14 @@ const SignUp = () => {
           <FormField
             title="First Name"
             value={form.firstName}
-            handleChangeText={(value) => setForm({ ...form, firstName: value })}
+            handleChangeText={handleChangeText}
             otherStyles="mt-7"
           />
 
           <FormField
             title="Last Name"
             value={form.lastName}
-            handleChangeText={(value) => setForm({ ...form, lastName: value })}
+            handleChangeText={handleChangeText}
             otherStyles="mt-4"
           />
 
@@ -102,7 +45,7 @@ const SignUp = () => {
           <FormField
             title="Password"
             value={form.password}
-            handleChangeText={(value) => setForm({ ...form, password: value })}
+            handleChangeText={handleChangeText}
             otherStyles="mt-4"
             secureTextEntry={true}
           />

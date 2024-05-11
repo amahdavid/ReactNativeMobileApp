@@ -1,6 +1,6 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, ScrollView, Image, Alert } from "react-native";
-import { images, Link, FormField, CustomButton, useLogin } from "@/utils/loginUtils";
+import { images, Link, FormField, CustomButton, useLogin } from "@/utils/authUtils";
 
 const Login = () => {
   const { isSubmitting, form, handleChangeEmail, handleChangePassword, submit } = useLogin();
