@@ -1,46 +1,9 @@
-import { View, Text, ScrollView, Image, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { images } from "@/constants";
-import { Link, router } from "expo-router";
-import FormField from "@/components/FormField";
-import React, { useEffect, useState } from "react";
-import CustomButton from "@/components/CustomButton";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { View, Text, ScrollView, Image, Alert } from "react-native";
+import { images, Link, FormField, CustomButton, useLogin } from "@/utils/loginUtils";
 
 const Login = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
-
-  const handleChangeEmail = (value: string) => {
-    const formattedEmail = value.charAt(0).toLowerCase() + value.slice(1);
-    setForm({ ...form, email: formattedEmail });
-  };
-
-  const submit = async () => {
-    console.log(form);
-    if (!form.email || !form.password) {
-      alert("Please fill all fields");
-      return;
-    }
-    setIsSubmitting(true);
-
-    try {
-      const response = await axios.post("http://localhost:3000/api/signin", form);
-      const token = response.data.token;
-      await AsyncStorage.setItem("token", token);
-      router.replace("/home");
-    } catch (error) {
-      console.log(error);
-      console.error("Token is null or undefined");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const { isSubmitting, form, handleChangeEmail, handleChangePassword, submit } = useLogin();
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -67,7 +30,7 @@ const Login = () => {
           <FormField
             title="Password"
             value={form.password}
-            handleChangeText={(value) => setForm({ ...form, password: value })}
+            handleChangeText={handleChangePassword}
             otherStyles="mt-4"
             secureTextEntry={true}
           />
@@ -85,7 +48,12 @@ const Login = () => {
             <Text className="text-lg text-white text-center mt-7">
               Don't have an account?{" "}
             </Text>
-            <Link href="/signUp" className="text-lg font-psemibold text-secondary">Sign Up</Link>
+            <Link
+              href="/signUp"
+              className="text-lg font-psemibold text-secondary"
+            >
+              Sign Up
+            </Link>
           </View>
         </View>
       </ScrollView>
