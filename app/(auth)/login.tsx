@@ -16,21 +16,6 @@ const Login = () => {
     password: "",
   });
 
-  useEffect(() => {
-    checkLoggedIn();
-  }, []);
-
-  const checkLoggedIn = async () => {
-    try {
-      const token = await AsyncStorage.getItem("token");
-      if (token) {
-        router.replace("/home");
-      }
-    } catch (error) {
-      console.error("Error checking logged in status:", error);
-    }
-  };
-
   const handleChangeEmail = (value: string) => {
     const formattedEmail = value.charAt(0).toLowerCase() + value.slice(1);
     setForm({ ...form, email: formattedEmail });

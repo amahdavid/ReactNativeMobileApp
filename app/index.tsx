@@ -5,8 +5,24 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "@/constants";
 import CustomButton from "@/components/CustomButton";
 import { useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
+
+  useEffect(() => {
+    checkLoggedIn();
+  }, []);
+
+  const checkLoggedIn = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      if (token) {
+        router.replace("/home");
+      }
+    } catch (error) {
+      console.error("Error checking logged in status:", error);
+    }
+  };
   
   return (
     <SafeAreaView className="bg-primary h-full">

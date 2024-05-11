@@ -2,12 +2,12 @@ const express = require("express");
 const mysql = require("mysql");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
-const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
+const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 
 const app = express();
 const port = 3000;
-const secretKey = crypto.randomBytes(64).toString('hex');
+const secretKey = crypto.randomBytes(64).toString("hex");
 
 app.use(bodyParser.json());
 
@@ -19,6 +19,10 @@ const validateEmail = (email) => {
 const validatePassword = (password) => {
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
   return passwordRegex.test(password);
+};
+
+generateToken = (userId) => {
+  return jwt.sign({ userId }, secretKey, { expiresIn: "10s" });
 };
 
 const connection = mysql.createConnection({
@@ -97,7 +101,7 @@ app.post("/api/signin", async (req, res) => {
       return res.status(401).send("Invalid email or password");
     }
 
-    const token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: '1h' });
+    const token = generateToken(user.id);
     jwt.verify(token, secretKey, (err, decoded) => {
       if (err) {
         return res.status(401).send("Invalid token");
