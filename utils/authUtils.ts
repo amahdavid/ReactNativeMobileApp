@@ -36,8 +36,9 @@ export const useLogin = () => {
         "http://localhost:3000/api/signin",
         form
       );
-      const token = response.data.token;
+      const { token, response: { userId } } = response.data;
       await AsyncStorage.setItem("token", token);
+      await AsyncStorage.setItem("userId", userId);
       router.replace("/home");
     } catch (error) {
       console.log(error);

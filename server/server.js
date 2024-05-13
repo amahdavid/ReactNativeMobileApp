@@ -23,7 +23,7 @@ const validatePassword = (password) => {
 };
 
 generateToken = (userId) => {
-  return jwt.sign({ userId }, secretKey, { expiresIn: "10s" });
+  return jwt.sign({ userId }, secretKey, { expiresIn: "1hr" });
 };
 
 const connection = mysql.createConnection({
@@ -127,50 +127,51 @@ app.post("/api/signin", async (req, res) => {
 });
 
 app.post("/api/create-post/:userId", (req, res) => {
-    const { title, thumbnail_url, description, video_url } = req.body;
-    const userId = req.params.userId;
-  
-    if (!title || !thumbnail_url || !description || !video_url) {
-      return res.status(400).json({
-        error:
-          "Title, thumbnail_url, description, and video_url are required fields",
-      });
-    }
-    
-    const checkDuplicateQuery = `SELECT * FROM posts WHERE user_id = ? AND video_url = ?`;
-    connection.query(checkDuplicateQuery, [userId, video_url], (err, results) => {
-      if (err) {
-        console.error("Error checking for duplicate video URL:", err);
-        return res.status(500).json({ error: "Server error" });
-      }
-      if (results.length > 0) {
-        return res.status(400).json({ error: "Video already posted by the user" });
-      }
-      
-      const postId = uuid.v4();
-      const createPostQuery = `INSERT INTO posts (id, user_id, title, thumbnail_url, description, video_url) VALUES (?, ?, ?, ?, ?, ?)`;
-      connection.query(
-        createPostQuery,
-        [postId, userId, title, thumbnail_url, description, video_url],
-        (err, result) => {
-          if (err) {
-            console.error("Error creating new post:", err);
-            return res.status(500).json({ error: "Server error" });
-          }
-          const post = {
-            id: postId,
-            user_id: userId,
-            title,
-            thumbnail_url,
-            description,
-            video_url
-          };
-          res.status(201).json({ message: "Post created successfully", post });
-        }
-      );
+  const { title, thumbnail_url, description, video_url } = req.body;
+  const userId = req.params.userId;
+
+  if (!title || !thumbnail_url || !description || !video_url) {
+    return res.status(400).json({
+      error:
+        "Title, thumbnail_url, description, and video_url are required fields",
     });
+  }
+
+  const checkDuplicateQuery = `SELECT * FROM posts WHERE user_id = ? AND video_url = ?`;
+  connection.query(checkDuplicateQuery, [userId, video_url], (err, results) => {
+    if (err) {
+      console.error("Error checking for duplicate video URL:", err);
+      return res.status(500).json({ error: "Server error" });
+    }
+    if (results.length > 0) {
+      return res
+        .status(400)
+        .json({ error: "Video already posted by the user" });
+    }
+
+    const postId = uuid.v4();
+    const createPostQuery = `INSERT INTO posts (id, user_id, title, thumbnail_url, description, video_url) VALUES (?, ?, ?, ?, ?, ?)`;
+    connection.query(
+      createPostQuery,
+      [postId, userId, title, thumbnail_url, description, video_url],
+      (err, result) => {
+        if (err) {
+          console.error("Error creating new post:", err);
+          return res.status(500).json({ error: "Server error" });
+        }
+        const post = {
+          id: postId,
+          user_id: userId,
+          title,
+          thumbnail_url,
+          description,
+          video_url,
+        };
+        res.status(201).json({ message: "Post created successfully", post });
+      }
+    );
   });
-  
+});
 
 app.post("/api/validate-token", (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
@@ -181,7 +182,6 @@ app.post("/api/validate-token", (req, res) => {
     if (err) {
       return res.status(401).send("Invalid token");
     }
-    // Check if the user associated with the token exists in the database
     const userId = decoded.userId;
     const getUserQuery = `SELECT * FROM users WHERE id = ?`;
     connection.query(getUserQuery, [userId], (err, result) => {
@@ -190,6 +190,34 @@ app.post("/api/validate-token", (req, res) => {
       }
       res.status(200).send("Token is valid");
     });
+  });
+});
+
+app.get("/api/:userId/posts", (req, res) => {
+  const userId = req.params.userId;
+  const getPostQuery = `SELECT * FROM posts WHERE user_id = ?`;
+  connection.query(getPostQuery, [userId], (err, results) => {
+    if (err) {
+      console.error("Error fetching posts:", err);
+      return res.status(500).json({ error: "Server error" });
+    }
+    res.status(200).json({ posts: results });
+  });
+});
+
+app.get("/api/:userId/post/:postId", (req, res) => {
+  const userId = req.params.userId;
+  const postId = req.params.postId;
+  const getPostQuery = `SELECT * FROM posts WHERE user_id = ? AND id = ?`;
+  connection.query(getPostQuery, [userId, postId], (err, results) => {
+    if (err) {
+      console.error("Error fetching post:", err);
+      return res.status(500).json({ error: "Server error" });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+    res.status(200).json({ post: results[0] });
   });
 });
 
