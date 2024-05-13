@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+const uuid = require("uuid");
 
 const app = express();
 const port = 3000;
@@ -52,6 +53,7 @@ app.post("/api/signup", async (req, res) => {
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
+  const userId = uuid.v4();
 
   const emailExistsQuery = `SELECT * FROM users WHERE email = ?`;
   connection.query(emailExistsQuery, [email], (err, result) => {
@@ -63,10 +65,10 @@ app.post("/api/signup", async (req, res) => {
       return res.status(400).send("Email address already registered");
     }
 
-    const insertUserQuery = `INSERT INTO users (firstName, lastName, email, password) VALUES (?, ?, ?, ?)`;
+    const insertUserQuery = `INSERT INTO users (id, firstName, lastName, email, password) VALUES (?, ?, ?, ?, ?)`;
     connection.query(
       insertUserQuery,
-      [firstName, lastName, email, hashedPassword],
+      [userId, firstName, lastName, email, hashedPassword],
       (err, result) => {
         if (err) {
           console.error("Error inserting new user:", err);
@@ -108,6 +110,52 @@ app.post("/api/signin", async (req, res) => {
       }
     });
     res.status(200).json({ token });
+  });
+});
+
+app.post("/api/create-post", (req, res) => {
+  const { title, thumbnail_url, description, video_url } = req.body;
+  const userId = req.user.id;
+
+  if (!title || !thumbnail_url || !description || !video_url) {
+    return res.status(400).json({
+      error:
+        "Title, thumbnail_url, description, and video_url are required fields",
+    });
+  }
+  const postId = uuid.v4();
+  const createPostQuery = `INSERT INTO posts (id, user_id, title, thumbnail_url, description, video_url) VALUES (?, ?, ?, ?, ?, ?)`;
+  connection.query(
+    createPostQuery,
+    [postId, userId, title, thumbnail_url, description, video_url],
+    (err, result) => {
+      if (err) {
+        console.error("Error creating new post:", err);
+        return res.status(500).send("Server error");
+      }
+      res.status(201).send("Post created successfully");
+    }
+  );
+});
+
+app.post("/api/validate-token", (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) {
+    return res.status(401).send("No token provided");
+  }
+  jwt.verify(token, secretKey, (err, decoded) => {
+    if (err) {
+      return res.status(401).send("Invalid token");
+    }
+    // Check if the user associated with the token exists in the database
+    const userId = decoded.userId;
+    const getUserQuery = `SELECT * FROM users WHERE id = ?`;
+    connection.query(getUserQuery, [userId], (err, result) => {
+      if (err || result.length === 0) {
+        return res.status(401).send("User not found");
+      }
+      res.status(200).send("Token is valid");
+    });
   });
 });
 

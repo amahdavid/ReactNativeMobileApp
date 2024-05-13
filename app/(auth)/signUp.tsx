@@ -29,14 +29,14 @@ const SignUp = () => {
           <FormField
             title="First Name"
             value={form.firstName}
-            handleChangeText={handleChangeText}
+            handleChangeText={(value) => handleChangeText("firstName", value)}
             otherStyles="mt-7"
           />
 
           <FormField
             title="Last Name"
             value={form.lastName}
-            handleChangeText={handleChangeText}
+            handleChangeText={(value) => handleChangeText("lastName", value)}
             otherStyles="mt-4"
           />
 
@@ -51,7 +51,7 @@ const SignUp = () => {
           <FormField
             title="Password"
             value={form.password}
-            handleChangeText={handleChangeText}
+            handleChangeText={(value) => handleChangeText("password", value)}
             otherStyles="mt-4"
             secureTextEntry={true}
           />

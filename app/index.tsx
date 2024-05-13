@@ -14,13 +14,28 @@ export default function App() {
     try {
       const token = await AsyncStorage.getItem("token");
       if (token) {
-        const decodedToken = jwtDecode(token) as jwt.JwtPayload;
-        if (decodedToken && decodedToken.exp && decodedToken.exp * 1000 < Date.now()) {
+        const response = await fetch("/api/validate-token", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.ok) {
+          const decodedToken = jwtDecode(token) as jwt.JwtPayload;
+          if (decodedToken && decodedToken.exp && decodedToken.exp * 1000 < Date.now()) {
+            await AsyncStorage.removeItem("token");
+            router.replace("/login");
+          } else {
+            router.replace("/home");
+          }
+        } else {
+          // Token validation failed or user doesn't exist
           await AsyncStorage.removeItem("token");
           router.replace("/login");
         }
       } else {
-        router.replace("/home");
+        router.replace("/login");
       }
     } catch (error) {
       console.error("Error checking logged in status:", error);

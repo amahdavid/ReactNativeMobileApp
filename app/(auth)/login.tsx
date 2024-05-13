@@ -13,7 +13,7 @@ const Login = () => {
     isSubmitting,
     form,
     handleChangeEmail,
-    handleChangePassword,
+    handleChangeText,
     submit,
   } = useLogin();
 
@@ -42,7 +42,7 @@ const Login = () => {
           <FormField
             title="Password"
             value={form.password}
-            handleChangeText={handleChangePassword}
+            handleChangeText={(value) => handleChangeText("password", value)}
             otherStyles="mt-4"
             secureTextEntry={true}
           />

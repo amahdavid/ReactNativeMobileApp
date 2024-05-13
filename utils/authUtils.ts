@@ -19,9 +19,9 @@ export const useLogin = () => {
     setForm({ ...form, email: formattedEmail });
   };
 
-  const handleChangePassword = (value: string) => {
-    setForm({ ...form, password: value });
-  };
+  const handleChangeText = (key: string, value: string) => {
+    setForm({ ...form, [key]: value });
+  }
 
   const submit = async () => {
     console.log(form);
@@ -52,7 +52,7 @@ export const useLogin = () => {
     form,
     handleChangeEmail,
     submit,
-    handleChangePassword,
+    handleChangeText,
   };
 };
 
@@ -70,10 +70,10 @@ export const useSignup = () => {
     setForm({ ...form, email: formattedEmail });
   };
 
-  const handleChangeText = (value: string) => {
-    setForm({ ...form, password: value });
-  };
-
+  const handleChangeText = (key: string, value: string) => {
+    setForm({ ...form, [key]: value });
+  }
+  
 
   const submit = async () => {
     console.log(form);
