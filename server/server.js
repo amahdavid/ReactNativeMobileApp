@@ -74,7 +74,14 @@ app.post("/api/signup", async (req, res) => {
           console.error("Error inserting new user:", err);
           return res.status(500).send("Server error");
         }
-        res.status(201).send("User created successfully");
+        const response = {
+          id: userId,
+          firstName,
+          lastName,
+          email,
+        };
+
+        res.status(201).json({ response });
       }
     );
   });
@@ -109,13 +116,19 @@ app.post("/api/signin", async (req, res) => {
         return res.status(401).send("Invalid token");
       }
     });
-    res.status(200).json({ token });
+    const response = {
+      userId: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+    };
+    res.status(200).json({ token, response });
   });
 });
 
-app.post("/api/create-post", (req, res) => {
+app.post("/api/create-post/:userId", (req, res) => {
   const { title, thumbnail_url, description, video_url } = req.body;
-  const userId = req.user.id;
+  const userId = req.params.userId;
 
   if (!title || !thumbnail_url || !description || !video_url) {
     return res.status(400).json({
@@ -123,6 +136,7 @@ app.post("/api/create-post", (req, res) => {
         "Title, thumbnail_url, description, and video_url are required fields",
     });
   }
+
   const postId = uuid.v4();
   const createPostQuery = `INSERT INTO posts (id, user_id, title, thumbnail_url, description, video_url) VALUES (?, ?, ?, ?, ?, ?)`;
   connection.query(
@@ -133,7 +147,15 @@ app.post("/api/create-post", (req, res) => {
         console.error("Error creating new post:", err);
         return res.status(500).send("Server error");
       }
-      res.status(201).send("Post created successfully");
+      const post = {
+        id: postId,
+        user_id: userId,
+        title,
+        thumbnail_url,
+        description,
+        video_url,
+      };
+      res.status(201).json({ message: "Post created successfully", post });
     }
   );
 });
