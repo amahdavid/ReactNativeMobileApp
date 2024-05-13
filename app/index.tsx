@@ -14,7 +14,7 @@ export default function App() {
     try {
       const token = await AsyncStorage.getItem("token");
       if (token) {
-        const response = await fetch("/api/validate-token", {
+        const response = await fetch("http://localhost:3000/api/validate-token", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
