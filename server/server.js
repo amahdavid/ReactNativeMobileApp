@@ -127,38 +127,50 @@ app.post("/api/signin", async (req, res) => {
 });
 
 app.post("/api/create-post/:userId", (req, res) => {
-  const { title, thumbnail_url, description, video_url } = req.body;
-  const userId = req.params.userId;
-
-  if (!title || !thumbnail_url || !description || !video_url) {
-    return res.status(400).json({
-      error:
-        "Title, thumbnail_url, description, and video_url are required fields",
-    });
-  }
-
-  const postId = uuid.v4();
-  const createPostQuery = `INSERT INTO posts (id, user_id, title, thumbnail_url, description, video_url) VALUES (?, ?, ?, ?, ?, ?)`;
-  connection.query(
-    createPostQuery,
-    [postId, userId, title, thumbnail_url, description, video_url],
-    (err, result) => {
-      if (err) {
-        console.error("Error creating new post:", err);
-        return res.status(500).send("Server error");
-      }
-      const post = {
-        id: postId,
-        user_id: userId,
-        title,
-        thumbnail_url,
-        description,
-        video_url,
-      };
-      res.status(201).json({ message: "Post created successfully", post });
+    const { title, thumbnail_url, description, video_url } = req.body;
+    const userId = req.params.userId;
+  
+    if (!title || !thumbnail_url || !description || !video_url) {
+      return res.status(400).json({
+        error:
+          "Title, thumbnail_url, description, and video_url are required fields",
+      });
     }
-  );
-});
+    
+    const checkDuplicateQuery = `SELECT * FROM posts WHERE user_id = ? AND video_url = ?`;
+    connection.query(checkDuplicateQuery, [userId, video_url], (err, results) => {
+      if (err) {
+        console.error("Error checking for duplicate video URL:", err);
+        return res.status(500).json({ error: "Server error" });
+      }
+      if (results.length > 0) {
+        return res.status(400).json({ error: "Video already posted by the user" });
+      }
+      
+      const postId = uuid.v4();
+      const createPostQuery = `INSERT INTO posts (id, user_id, title, thumbnail_url, description, video_url) VALUES (?, ?, ?, ?, ?, ?)`;
+      connection.query(
+        createPostQuery,
+        [postId, userId, title, thumbnail_url, description, video_url],
+        (err, result) => {
+          if (err) {
+            console.error("Error creating new post:", err);
+            return res.status(500).json({ error: "Server error" });
+          }
+          const post = {
+            id: postId,
+            user_id: userId,
+            title,
+            thumbnail_url,
+            description,
+            video_url
+          };
+          res.status(201).json({ message: "Post created successfully", post });
+        }
+      );
+    });
+  });
+  
 
 app.post("/api/validate-token", (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
