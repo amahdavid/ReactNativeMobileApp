@@ -16,9 +16,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Home = () => {
   const [refreshing, setRefreshing] = React.useState(false);
+  const [userId, setUserId] = React.useState(null);
+
   const [data, setData] = React.useState([] as any[]);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [userId, setUserId] = React.useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,38 +31,36 @@ const Home = () => {
         }
         setUserId(storedUserId);
         const response = await fetch(
-          `http://localhost:3000/api/${userId}/posts`
+          `http://localhost:3000/api/${storedUserId}/posts`
         );
         if (!response.ok) {
           throw new Error("Error fetching data");
         }
         const data = await response.json();
-        setData(data);
+        setData(data.posts);
       } catch (error: any) {
         Alert.alert("Error", error.message);
       } finally {
         setIsLoading(false);
+        setRefreshing(false);
       }
     };
-
     fetchData();
-  }, []);
+  }, [refreshing]);
 
   const onRefresh = async () => {
     setRefreshing(true);
-    // fetch new data
-    setRefreshing(false);
   };
 
   return (
     <SafeAreaView className="bg-primary h-full">
       <FlatList
-        data={[{ id: 1 }]}
+        data={data}
         // data={[]}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <View>
-            <Text className="text-3xl text-white text-center">{item.id}</Text>
+            <Text className="text-3xl text-white text-center">{item.title}</Text>
           </View>
         )}
         ListHeaderComponent={() => (

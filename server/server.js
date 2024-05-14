@@ -221,6 +221,17 @@ app.get("/api/:userId/post/:postId", (req, res) => {
   });
 });
 
+app.get("/api/posts", (req, res) => {
+    const getAllPostsQuery = `SELECT * FROM posts`;
+    connection.query(getAllPostsQuery, (err, results) => {
+      if (err) {
+        console.error("Error fetching posts:", err);
+        return res.status(500).json({ error: "Server error" });
+      }
+      res.status(200).json({ posts: results });
+    });
+  });  
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
