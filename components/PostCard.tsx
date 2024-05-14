@@ -20,22 +20,15 @@ const PostCard = ({
     <View className="flex-col items-center px-4 mb-14">
       <View className="flex-row gap-3 items-start">
         <View className="justify-center items-center flex-row flex-1">
-          <View className="w-[46px] h-[46px] rounded-lg border border-secondary justify-center items-center p-0.5">
-            <Image
-              source={{ uri: thumbnail_url }}
-              className="w-full h-full rounded-lg"
-              resizeMode="cover"
-            />
-          </View>
           <View className="justify-center flex-1 ml-3 gap-y-1">
             <Text
-              className="text-white font-psemibold text-md"
+              className="text-white font-psemibold text-lg"
               numberOfLines={1}
             >
               {title}
             </Text>
             <Text
-              className="text-xs text-gray-100 font-pregular"
+              className="text-sm text-gray-100 font-pregular"
               numberOfLines={1}
             >
               {firstName} {lastName}
