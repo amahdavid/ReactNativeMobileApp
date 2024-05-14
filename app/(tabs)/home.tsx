@@ -13,6 +13,7 @@ import SearchInput from "@/components/SearchInput";
 import Trending from "@/components/Trending";
 import EmptyState from "@/components/EmptyState";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import PostCard from "@/components/PostCard";
 
 const Home = () => {
   const [refreshing, setRefreshing] = React.useState(false);
@@ -52,16 +53,15 @@ const Home = () => {
     setRefreshing(true);
   };
 
+  console.log(data);
+
   return (
     <SafeAreaView className="bg-primary h-full">
       <FlatList
         data={data}
-        // data={[]}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <View>
-            <Text className="text-3xl text-white text-center">{item.title}</Text>
-          </View>
+          <PostCard posts={item}/>
         )}
         ListHeaderComponent={() => (
           <View className="my-6 px-4 space-y-6">

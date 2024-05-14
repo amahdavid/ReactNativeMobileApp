@@ -194,16 +194,22 @@ app.post("/api/validate-token", (req, res) => {
 });
 
 app.get("/api/:userId/posts", (req, res) => {
-  const userId = req.params.userId;
-  const getPostQuery = `SELECT * FROM posts WHERE user_id = ?`;
-  connection.query(getPostQuery, [userId], (err, results) => {
-    if (err) {
-      console.error("Error fetching posts:", err);
-      return res.status(500).json({ error: "Server error" });
-    }
-    res.status(200).json({ posts: results });
+    const userId = req.params.userId;
+    const getPostQuery = `
+      SELECT posts.*, users.firstName, users.lastName
+      FROM posts
+      JOIN users ON posts.user_id = users.id
+      WHERE posts.user_id = ?`;
+    
+    connection.query(getPostQuery, [userId], (err, results) => {
+      if (err) {
+        console.error("Error fetching posts:", err);
+        return res.status(500).json({ error: "Server error" });
+      }
+      res.status(200).json({ posts: results });
+    });
   });
-});
+  
 
 app.get("/api/:userId/post/:postId", (req, res) => {
   const userId = req.params.userId;
