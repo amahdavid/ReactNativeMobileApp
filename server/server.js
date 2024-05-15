@@ -267,7 +267,7 @@ app.get("/api/trending-posts", (req, res) => {
   }
 });
 
-app.get("/api/posts", (req, res) => {
+app.get("/api/posts/search", (req, res) => {
   try {
     const getAllPostsQuery = `
         SELECT posts.*, users.firstName, users.lastName
@@ -275,6 +275,37 @@ app.get("/api/posts", (req, res) => {
         JOIN users ON posts.user_id = users.id`;
 
     connection.query(getAllPostsQuery, (err, results) => {
+      if (err) {
+        console.error("Error fetching posts:", err);
+        return res.status(500).json({ error: "Server error" });
+      }
+      res.status(200).json({ posts: results });
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+
+app.get("/api/posts", (req, res) => {
+  try {
+    const { search } = req.query;
+
+    let queryParams = [];
+    let filterConditions = "";
+
+    if (search) {
+      filterConditions += ` WHERE posts.title LIKE ?`;
+      queryParams.push(`%${search}%`);
+    }
+
+    const getAllPostsQuery = `
+        SELECT posts.*, users.firstName, users.lastName
+        FROM posts
+        JOIN users ON posts.user_id = users.id
+        ${filterConditions}`;
+
+    connection.query(getAllPostsQuery, queryParams, (err, results) => {
       if (err) {
         console.error("Error fetching posts:", err);
         return res.status(500).json({ error: "Server error" });
