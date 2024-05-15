@@ -9,6 +9,7 @@ import { validateEmail, validatePassword } from "./validation";
 
 export const useLogin = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -40,8 +41,15 @@ export const useLogin = () => {
       await AsyncStorage.setItem("token", token);
       await AsyncStorage.setItem("userId", userId);
       router.replace("/home");
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      if (error.response && error.response.status === 401) {
+        setError("Invalid email or password");
+        console.error(error.response.data)
+      } else {
+        console.log("Error:", error);
+        setError("An unexpected error occurred. Please try again later.");
+        console.error(error.response.data)
+      }
     } finally {
       setIsSubmitting(false);
     }
