@@ -216,7 +216,8 @@ app.get("/api/trending-posts", (req, res) => {
         FROM posts
         JOIN users ON posts.user_id = users.id
         WHERE posts.user_id = ?
-        ORDER BY posts.created_at DESC`;
+        ORDER BY posts.created_at DESC
+        LIMIT 5`;
 
   connection.query(getPostQuery, [userId], (err, results) => {
     if (err) {

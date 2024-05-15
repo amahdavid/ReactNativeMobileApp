@@ -6,14 +6,14 @@ interface Post {
   title: string;
   thumbnail_url: string;
   video: string;
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
 }
 
 const PostCard = ({
-  posts: { title, thumbnail_url, video, firstName, lastName },
+  data: { title, thumbnail_url, video, firstName, lastName },
 }: {
-  posts: Post;
+  data: Post;
 }) => {
   const [play, setPlay] = React.useState(false);
   return (

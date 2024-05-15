@@ -14,61 +14,19 @@ import Trending from "@/components/Trending";
 import EmptyState from "@/components/EmptyState";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import PostCard from "@/components/PostCard";
+import useFetchData from "@/hooks/homeDataHook";
 
 const Home = () => {
-  const [refreshing, setRefreshing] = React.useState(false);
-  const [userId, setUserId] = React.useState(null);
-  const [username, setUsername] = React.useState(null);
-
-  const [data, setData] = React.useState([] as any[]);
-  const [isLoading, setIsLoading] = React.useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const storedUserId = await AsyncStorage.getItem("userId");
-        if (!storedUserId) {
-          throw new Error("User not found");
-        }
-        const response = await fetch(
-          `http://localhost:3000/api/posts`
-        );
-        if (!response.ok) {
-          throw new Error("Error fetching data");
-        }
-        const data = await response.json();
-        setData(data.posts);
-
-        const userResponse = await fetch(`http://localhost:3000/api/users/${storedUserId}`);
-        if (!userResponse.ok) {
-          throw new Error("Error fetching user data");
-        }
-        const user = await userResponse.json();
-        setUsername(user.firstName);
-      } catch (error: any) {
-        Alert.alert("Error", error.message);
-      } finally {
-        setIsLoading(false);
-        setRefreshing(false);
-      }
-    };
-    fetchData();
-  }, [refreshing]);
-
-  const onRefresh = async () => {
-    setRefreshing(true);
-  };
-
-  console.log(data);
+  const { refreshing, data, isLoading, onRefresh } = useFetchData();
+  const { user, posts } = data;
 
   return (
     <SafeAreaView className="bg-primary h-full">
       <FlatList
-        data={data}
+        data={posts}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <PostCard posts={item}/>
+          <PostCard data={item}/>
         )}
         ListHeaderComponent={() => (
           <View className="my-6 px-4 space-y-6">
@@ -78,7 +36,7 @@ const Home = () => {
                   Welcome Back
                 </Text>
                 <Text className="text-2xl font-psemibold text-white">
-                  {username}
+                  {user.firstName}
                 </Text>
               </View>
               <View className="mt-1.5">
