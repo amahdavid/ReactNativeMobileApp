@@ -210,18 +210,16 @@ app.get("/api/users/:userId", (req, res) => {
 });
 
 app.get("/api/trending-posts", (req, res) => {
-  const userId = req.params.userId;
   const getPostQuery = `
-        SELECT posts.*, users.firstName, users.lastName
-        FROM posts
-        JOIN users ON posts.user_id = users.id
-        WHERE posts.user_id = ?
-        ORDER BY posts.created_at DESC
-        LIMIT 5`;
+    SELECT posts.*, users.firstName, users.lastName
+    FROM posts
+    JOIN users ON posts.user_id = users.id
+    ORDER BY posts.created_at DESC
+    LIMIT 5`;
 
-  connection.query(getPostQuery, [userId], (err, results) => {
+  connection.query(getPostQuery, (err, results) => {
     if (err) {
-      console.error("Error fetching posts:", err);
+      console.error("Error fetching latest posts:", err);
       return res.status(500).json({ error: "Server error" });
     }
     res.status(200).json({ posts: results });

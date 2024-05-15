@@ -17,11 +17,16 @@ interface User {
 interface Data {
   posts: Post[];
   user: User;
+  trendingPosts: Post[];
 }
 
 const useFetchData = () => {
   const [refreshing, setRefreshing] = useState(false);
-  const [data, setData] = useState<Data>({ posts: [], user: { firstName: "", lastName: "" } });
+  const [data, setData] = useState<Data>({
+    posts: [],
+    user: { firstName: "", lastName: "" },
+    trendingPosts: [],
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -33,21 +38,32 @@ const useFetchData = () => {
           throw new Error("User not found");
         }
 
-        const [postsResponse, userResponse] = await Promise.all([
-          fetch(`http://localhost:3000/api/posts`),
-          fetch(`http://localhost:3000/api/users/${storedUserId}`)
-        ]);
+        const [postsResponse, userResponse, trendingPostsResponse] =
+          await Promise.all([
+            fetch(`http://localhost:3000/api/posts`),
+            fetch(`http://localhost:3000/api/users/${storedUserId}`),
+            fetch(`http://localhost:3000/api/trending-posts`),
+          ]);
 
-        if (!postsResponse.ok || !userResponse.ok) {
+        if (
+          !postsResponse.ok ||
+          !userResponse.ok ||
+          !trendingPostsResponse.ok
+        ) {
           throw new Error("Error fetching data");
         }
 
-        const [postsData, userData] = await Promise.all([
+        const [postsData, userData, trendingPostData] = await Promise.all([
           postsResponse.json(),
-          userResponse.json()
+          userResponse.json(),
+          trendingPostsResponse.json(),
         ]);
 
-        setData({ posts: postsData.posts, user: userData });
+        setData({
+          posts: postsData.posts,
+          user: userData,
+          trendingPosts: trendingPostData.posts,
+        });
       } catch (error: any) {
         Alert.alert("Error", error.message);
       } finally {

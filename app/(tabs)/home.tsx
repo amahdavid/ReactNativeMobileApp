@@ -4,7 +4,6 @@ import {
   FlatList,
   Image,
   RefreshControl,
-  Alert,
 } from "react-native";
 import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -12,13 +11,13 @@ import { images } from "@/constants";
 import SearchInput from "@/components/SearchInput";
 import Trending from "@/components/Trending";
 import EmptyState from "@/components/EmptyState";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import PostCard from "@/components/PostCard";
 import useFetchData from "@/hooks/homeDataHook";
 
 const Home = () => {
   const { refreshing, data, isLoading, onRefresh } = useFetchData();
-  const { user, posts } = data;
+  const { user, posts, trendingPosts } = data;
+  console.log(data);
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -52,7 +51,7 @@ const Home = () => {
               <Text className="text-gray-100 text-lg font-pregular">
                 Latest Videos
               </Text>
-              <Trending posts={[{ id: 1 }, { id: 2 }, { id: 3 }] ?? []} />
+              <Trending posts={trendingPosts} />
             </View>
           </View>
         )}
