@@ -193,23 +193,39 @@ app.post("/api/validate-token", (req, res) => {
   });
 });
 
-app.get("/api/:userId/posts", (req, res) => {
-    const userId = req.params.userId;
-    const getPostQuery = `
-      SELECT posts.*, users.firstName, users.lastName
-      FROM posts
-      JOIN users ON posts.user_id = users.id
-      WHERE posts.user_id = ?`;
-    
-    connection.query(getPostQuery, [userId], (err, results) => {
-      if (err) {
-        console.error("Error fetching posts:", err);
-        return res.status(500).json({ error: "Server error" });
-      }
-      res.status(200).json({ posts: results });
-    });
+app.get("/api/users/:userId", (req, res) => {
+  const userId = req.params.userId;
+  const getUserQuery = `SELECT firstName, lastName FROM users WHERE id = ?`;
+  connection.query(getUserQuery, [userId], (err, results) => {
+    if (err) {
+      console.error("Error fetching user data:", err);
+      return res.status(500).json({ error: "Server error" });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const userData = results[0];
+    res.status(200).json(userData);
   });
-  
+});
+
+app.get("/api/trending-posts", (req, res) => {
+  const userId = req.params.userId;
+  const getPostQuery = `
+        SELECT posts.*, users.firstName, users.lastName
+        FROM posts
+        JOIN users ON posts.user_id = users.id
+        WHERE posts.user_id = ?
+        ORDER BY posts.created_at DESC`;
+
+  connection.query(getPostQuery, [userId], (err, results) => {
+    if (err) {
+      console.error("Error fetching posts:", err);
+      return res.status(500).json({ error: "Server error" });
+    }
+    res.status(200).json({ posts: results });
+  });
+});
 
 app.get("/api/:userId/post/:postId", (req, res) => {
   const userId = req.params.userId;
@@ -228,15 +244,19 @@ app.get("/api/:userId/post/:postId", (req, res) => {
 });
 
 app.get("/api/posts", (req, res) => {
-    const getAllPostsQuery = `SELECT * FROM posts`;
-    connection.query(getAllPostsQuery, (err, results) => {
-      if (err) {
-        console.error("Error fetching posts:", err);
-        return res.status(500).json({ error: "Server error" });
-      }
-      res.status(200).json({ posts: results });
-    });
-  });  
+  const getAllPostsQuery = `
+      SELECT posts.*, users.firstName, users.lastName
+      FROM posts
+      JOIN users ON posts.user_id = users.id`;
+
+  connection.query(getAllPostsQuery, (err, results) => {
+    if (err) {
+      console.error("Error fetching posts:", err);
+      return res.status(500).json({ error: "Server error" });
+    }
+    res.status(200).json({ posts: results });
+  });
+});
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

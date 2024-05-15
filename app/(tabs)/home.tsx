@@ -18,6 +18,7 @@ import PostCard from "@/components/PostCard";
 const Home = () => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [userId, setUserId] = React.useState(null);
+  const [username, setUsername] = React.useState(null);
 
   const [data, setData] = React.useState([] as any[]);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -30,15 +31,21 @@ const Home = () => {
         if (!storedUserId) {
           throw new Error("User not found");
         }
-        setUserId(storedUserId);
         const response = await fetch(
-          `http://localhost:3000/api/${storedUserId}/posts`
+          `http://localhost:3000/api/posts`
         );
         if (!response.ok) {
           throw new Error("Error fetching data");
         }
         const data = await response.json();
         setData(data.posts);
+
+        const userResponse = await fetch(`http://localhost:3000/api/users/${storedUserId}`);
+        if (!userResponse.ok) {
+          throw new Error("Error fetching user data");
+        }
+        const user = await userResponse.json();
+        setUsername(user.firstName);
       } catch (error: any) {
         Alert.alert("Error", error.message);
       } finally {
@@ -71,7 +78,7 @@ const Home = () => {
                   Welcome Back
                 </Text>
                 <Text className="text-2xl font-psemibold text-white">
-                  User's Name
+                  {username}
                 </Text>
               </View>
               <View className="mt-1.5">
