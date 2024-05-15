@@ -9,7 +9,7 @@ import {
 } from "@/utils/authUtils";
 
 const SignUp = () => {
-  const { isSubmitting, form, handleChangeEmail, handleChangeText, submit } =
+  const { isSubmitting, form, handleChangeEmail, handleChangeText, signUpAndFetchUser } =
     useSignup();
 
   return (
@@ -60,7 +60,7 @@ const SignUp = () => {
             title="Sign Up"
             containerStyle="mt-7"
             handlePress={() => {
-              submit();
+              signUpAndFetchUser();
             }}
             isLoading={isSubmitting}
           />

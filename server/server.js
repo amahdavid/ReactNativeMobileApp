@@ -80,8 +80,13 @@ app.post("/api/signup", async (req, res) => {
           lastName,
           email,
         };
-
-        res.status(201).json({ response });
+        const token = generateToken(userId);
+        jwt.verify(token, secretKey, (err, decoded) => {
+          if (err) {
+            return res.status(401).send("Invalid token");
+          }
+        });
+        res.status(201).json({ token, response });
       }
     );
   });

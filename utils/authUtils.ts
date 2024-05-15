@@ -42,7 +42,6 @@ export const useLogin = () => {
       router.replace("/home");
     } catch (error) {
       console.log(error);
-      console.error("Token is null or undefined");
     } finally {
       setIsSubmitting(false);
     }
@@ -59,6 +58,7 @@ export const useLogin = () => {
 
 export const useSignup = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [username, setUsername] = useState('');
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -74,7 +74,6 @@ export const useSignup = () => {
   const handleChangeText = (key: string, value: string) => {
     setForm({ ...form, [key]: value });
   }
-  
 
   const submit = async () => {
     console.log(form);
@@ -98,7 +97,11 @@ export const useSignup = () => {
     setIsSubmitting(true);
 
     try {
-      await axios.post("http://localhost:3000/api/signup", form);
+      const response = await axios.post("http://localhost:3000/api/signup", form);
+      const { token, response: { id, firstName } } = response.data;
+      await AsyncStorage.setItem("token", token);
+      await AsyncStorage.setItem("userId", id);
+      await AsyncStorage.setItem("firstName", firstName); // Store the user's first name
       router.replace("/home");
     } catch (error) {
       console.log(error);
@@ -107,13 +110,30 @@ export const useSignup = () => {
     }
   };
 
+  const signUpAndFetchUser = async () => {
+    try {
+      await submit();
+      const storedUserId = await AsyncStorage.getItem("userId");
+      const userResponse = await fetch(`http://localhost:3000/api/users/${storedUserId}`);
+      if (!userResponse.ok) {
+        throw new Error("Error fetching user data");
+      }
+      const user = await userResponse.json();
+      setUsername(user.firstName);
+      router.replace("/home");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return {
     isSubmitting,
     form,
     handleChangeEmail,
-    submit,
-    handleChangeText
+    handleChangeText,
+    signUpAndFetchUser
   };
 };
+
 
 export { images, Link, router, FormField, CustomButton, axios, AsyncStorage, Redirect };

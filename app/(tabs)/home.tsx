@@ -13,12 +13,10 @@ import Trending from "@/components/Trending";
 import EmptyState from "@/components/EmptyState";
 import PostCard from "@/components/PostCard";
 import useFetchData from "@/hooks/homeDataHook";
-import { Video, ResizeMode } from "expo-av";
 
 const Home = () => {
   const { refreshing, data, isLoading, onRefresh } = useFetchData();
   const { user, posts, trendingPosts } = data;
-  console.log(data);
 
   return (
     <SafeAreaView className="bg-primary h-full">
