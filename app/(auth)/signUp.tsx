@@ -17,7 +17,7 @@ const SignUp = () => {
       <ScrollView>
         <View className="w-full justify-center h-auto px-4 my-6">
           <Image
-            source={images.logo}
+            source={images.favicon}
             resizeMode="contain"
             className="w-[115px] h-[35px]"
           />
