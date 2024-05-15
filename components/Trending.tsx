@@ -9,6 +9,7 @@ import {
 import React from "react";
 import * as Animatable from "react-native-animatable";
 import { icons } from "@/constants";
+import { Video, ResizeMode } from "expo-av";
 
 const zoomIn = {
   0: {
@@ -28,7 +29,7 @@ const zoomOut = {
   },
 };
 
-const TrendingItem = ({ activeItem, item }: { activeItem: any, item: any }) => {
+const TrendingItem = ({ activeItem, item }: { activeItem: any; item: any }) => {
   const [play, setPlay] = React.useState(false);
 
   return (
@@ -38,7 +39,18 @@ const TrendingItem = ({ activeItem, item }: { activeItem: any, item: any }) => {
       duration={300}
     >
       {play ? (
-        <Text className="text-white">Playing</Text>
+        <Video
+          source={{ uri: item.video_url }}
+          resizeMode={ResizeMode.CONTAIN}
+          shouldPlay
+          useNativeControls
+          onPlaybackStatusUpdate={(status) => {
+            if (status.isLoaded && !status.isPlaying) {
+              setPlay(false);
+            }
+          }}
+          className="w-52 h-72 rounded-[35px] mt-3 bg-white/10"
+        />
       ) : (
         <TouchableOpacity
           className="relative justify-center items-center"
