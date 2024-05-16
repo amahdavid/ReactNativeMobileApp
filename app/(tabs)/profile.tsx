@@ -1,5 +1,5 @@
 import { View, Text, FlatList, TouchableOpacity, Image } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import EmptyState from "@/components/EmptyState";
@@ -8,18 +8,56 @@ import { AsyncStorage, images } from "@/utils/authUtils";
 import { icons } from "@/constants";
 import InfoBox from "@/components/InfoBox";
 
+interface Post {
+  id: number;
+  title: string;
+  thumbnail_url: string;
+  video: string;
+}
+
+interface User {
+  firstName: string;
+  lastName: string;
+}
+
+interface Data {
+  posts: Post[];
+  user: User;
+}
+
 const Profile = () => {
+  const [info, setInfo] = useState<Data>({
+    posts: [],
+    user: { firstName: "", lastName: "" },
+  });
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const userId = await AsyncStorage.getItem("userId");
+        const response = await fetch(
+          `http://localhost:3000/api/${userId}/posts`
+        );
+        const data = await response.json();
+        setInfo(data.posts);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchPosts();
+  }, []);
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem("token");
-    await AsyncStorage.removeItem("userId");  
+    await AsyncStorage.removeItem("userId");
     router.replace("/login");
-  }
+  };
 
   return (
     <SafeAreaView className="bg-primary h-full">
       <FlatList
-        data={[]}
+        data={info}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <PostCard data={item} />}
         ListEmptyComponent={() => (
@@ -48,7 +86,7 @@ const Profile = () => {
               />
             </View>
             <InfoBox
-              title="Static User"
+              title={ `${info.user.firstName} ${info.user.lastName}` }
               description="User's bio"
               containerStyles="mt-5"
               titleStyles="text-xl"

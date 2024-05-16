@@ -245,6 +245,23 @@ app.get("/api/users/:userId", (req, res) => {
   }
 });
 
+app.get("/api/:userId/posts", (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const getPostQuery = `SELECT * FROM posts WHERE user_id = ?`;
+    connection.query(getPostQuery, [userId], (err, results) => {
+      if (err) {
+        console.error("Error fetching posts:", err);
+        return res.status(500).json({ error: "Server error" });
+      }
+      res.status(200).json({ posts: results });
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+
 app.get("/api/trending-posts", (req, res) => {
   try {
     const getPostQuery = `
