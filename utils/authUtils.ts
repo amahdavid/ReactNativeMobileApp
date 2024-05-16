@@ -25,7 +25,6 @@ export const useLogin = () => {
   }
 
   const submit = async () => {
-    console.log(form);
     if (!form.email || !form.password) {
       alert("Please fill all fields");
       return;
@@ -84,7 +83,6 @@ export const useSignup = () => {
   }
 
   const submit = async () => {
-    console.log(form);
     if (!form.firstName || !form.lastName || !form.email || !form.password) {
       alert("Please fill all fields");
       return;
