@@ -9,23 +9,6 @@ import { icons } from "@/constants";
 import InfoBox from "@/components/InfoBox";
 import useFetchData from "@/hooks/dataHook";
 
-interface Post {
-  id: number;
-  title: string;
-  thumbnail_url: string;
-  video: string;
-}
-
-interface User {
-  firstName: string;
-  lastName: string;
-}
-
-interface Data {
-  posts: Post[];
-  user: User;
-}
-
 const Profile = () => {
   const { data } = useFetchData();
   const { user, userSpecificPosts } = data;

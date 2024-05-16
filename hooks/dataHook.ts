@@ -44,13 +44,17 @@ const useFetchData = () => {
           throw new Error("User not found");
         }
 
-        const [postsResponse, userResponse, trendingPostsResponse, userSpecificPostsResponse] =
-          await Promise.all([
-            fetch(`http://localhost:3000/api/posts`),
-            fetch(`http://localhost:3000/api/users/${storedUserId}`),
-            fetch(`http://localhost:3000/api/trending-posts`),
-            fetch(`http://localhost:3000/api/${storedUserId}/posts`),
-          ]);
+        const [
+          postsResponse,
+          userResponse,
+          trendingPostsResponse,
+          userSpecificPostsResponse,
+        ] = await Promise.all([
+          fetch(`http://localhost:3000/api/posts`),
+          fetch(`http://localhost:3000/api/users/${storedUserId}`),
+          fetch(`http://localhost:3000/api/trending-posts`),
+          fetch(`http://localhost:3000/api/${storedUserId}/posts`),
+        ]);
 
         if (
           !postsResponse.ok ||
@@ -61,12 +65,13 @@ const useFetchData = () => {
           throw new Error("Error fetching data");
         }
 
-        const [postsData, userData, trendingPostData, userSpecificData] = await Promise.all([
-          postsResponse.json(),
-          userResponse.json(),
-          trendingPostsResponse.json(),
-          userSpecificPostsResponse.json(),
-        ]);
+        const [postsData, userData, trendingPostData, userSpecificData] =
+          await Promise.all([
+            postsResponse.json(),
+            userResponse.json(),
+            trendingPostsResponse.json(),
+            userSpecificPostsResponse.json(),
+          ]);
 
         setData({
           posts: postsData.posts,
