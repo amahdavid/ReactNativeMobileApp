@@ -7,6 +7,7 @@ import PostCard from "@/components/PostCard";
 import { AsyncStorage, images } from "@/utils/authUtils";
 import { icons } from "@/constants";
 import InfoBox from "@/components/InfoBox";
+import useFetchData from "@/hooks/dataHook";
 
 interface Post {
   id: number;
@@ -26,27 +27,8 @@ interface Data {
 }
 
 const Profile = () => {
-  const [info, setInfo] = useState<Data>({
-    posts: [],
-    user: { firstName: "", lastName: "" },
-  });
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const userId = await AsyncStorage.getItem("userId");
-        const response = await fetch(
-          `http://localhost:3000/api/${userId}/posts`
-        );
-        const data = await response.json();
-        setInfo(data.posts);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchPosts();
-  }, []);
+  const { data } = useFetchData();
+  const { user, userSpecificPosts } = data;
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem("token");
@@ -57,7 +39,7 @@ const Profile = () => {
   return (
     <SafeAreaView className="bg-primary h-full">
       <FlatList
-        data={info}
+        data={userSpecificPosts}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <PostCard data={item} />}
         ListEmptyComponent={() => (
@@ -86,7 +68,7 @@ const Profile = () => {
               />
             </View>
             <InfoBox
-              title={ `${info.user.firstName} ${info.user.lastName}` }
+              title={user.firstName + " " + user.lastName}
               description="User's bio"
               containerStyles="mt-5"
               titleStyles="text-xl"
