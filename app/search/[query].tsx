@@ -38,7 +38,7 @@ const Search = () => {
           <>
             <View className="flex my-6 px-4">
               <Text className="font-pmedium text-gray-100 text-sm">
-                Search Results
+                Search Results for
               </Text>
               <Text className="text-2xl font-psemibold text-white mt-1">
                 {query}
