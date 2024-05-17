@@ -1,18 +1,5 @@
-import {
-  View,
-  Text,
-  FlatList,
-  Image,
-  RefreshControl,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { images } from "@/constants";
-import SearchInput from "@/components/SearchInput";
-import Trending from "@/components/Trending";
-import EmptyState from "@/components/EmptyState";
-import PostCard from "@/components/PostCard";
-import useFetchData from "@/hooks/dataHook";
+import { View, Text, FlatList, Image, RefreshControl, React, SafeAreaView, images } from "@/utils/commonImports";
+import { SearchInput, Trending, EmptyState, PostCard, useFetchData } from "@/utils/commonImports";
 
 const Home = () => {
   const { refreshing, data, isLoading, onRefresh } = useFetchData();
