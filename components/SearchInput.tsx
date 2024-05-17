@@ -4,7 +4,7 @@ import {
   TouchableOpacity,
   Alert,
   Image,
-} from "@/utils/commonImports";
+} from "react-native";
 import { router, usePathname } from "expo-router";
 import React, { useState } from "react";
 import { icons } from "@/constants";
