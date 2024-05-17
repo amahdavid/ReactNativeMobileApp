@@ -1,18 +1,10 @@
-import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import React, { useState } from "react";
-import FormField from "@/components/FormField";
-import { Video, ResizeMode } from "expo-av";
-import { icons } from "@/constants";
-import CustomButton from "@/components/CustomButton";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { router } from "expo-router";
+import {FormField, CustomButton } from "@/utils/commonImports"
+import { SafeAreaView, ScrollView, Text, React, axios, AsyncStorage, router } from "@/utils/commonImports"
 
 const Create = () => {
-  const [uploading, setUploading] = useState(false);
+  const [uploading, setUploading] = React.useState(false);
 
-  const [form, setForm] = useState({
+  const [form, setForm] = React.useState({
     title: "",
     description: "",
     video_url: "",
