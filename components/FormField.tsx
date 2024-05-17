@@ -1,13 +1,4 @@
-import {
-  View,
-  Text,
-  TextInput,
-  KeyboardTypeOptions,
-  Image,
-  TouchableOpacity
-} from "react-native";
-import React, { useState } from "react";
-import { icons } from "@/constants";
+import { View, Text, TextInput, KeyboardTypeOptions, Image, TouchableOpacity, useState, icons } from "@/utils/commonImports";
 
 interface FormFieldProps {
   title: string;

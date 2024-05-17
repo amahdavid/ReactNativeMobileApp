@@ -8,7 +8,9 @@ import {
   ImageSourcePropType,
   RefreshControl,
   FlatList,
-  Alert
+  Alert,
+  KeyboardTypeOptions,
+  TextInput
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState, useEffect } from "react";
@@ -33,7 +35,6 @@ import useFetchData from "@/hooks/dataHook";
 import InfoBox from "@/components/InfoBox";
 import { icons, images } from "@/constants";
 import { validateEmail, validatePassword } from "./validation";
-import { useSignup, useLogin } from "./authUtils";
 
 // Module Exports for React and React Native Components
 export {
@@ -50,7 +51,9 @@ export {
   AsyncStorage,
   RefreshControl,
   FlatList,
-  Alert
+  Alert,
+  KeyboardTypeOptions,
+  TextInput
 };
 
 // Module Exports for Expo Components
