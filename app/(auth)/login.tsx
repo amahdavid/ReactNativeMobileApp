@@ -1,12 +1,5 @@
-import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, ScrollView, Image, Alert } from "react-native";
-import {
-  images,
-  Link,
-  FormField,
-  CustomButton,
-  useLogin,
-} from "@/utils/authUtils";
+import { SafeAreaView, View, Text, ScrollView, Image, images, useLogin, Link } from "@/utils/commonImports";
+import { FormField, CustomButton } from "@/utils/commonImports";
 
 const Login = () => {
   const {

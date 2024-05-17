@@ -1,11 +1,5 @@
-import { images } from "@/constants";
-import { Link, router, Redirect } from "expo-router";
-import FormField from "@/components/FormField";
-import CustomButton from "@/components/CustomButton";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useState } from "react";
-import { validateEmail, validatePassword } from "./validation";
+import { images, Link, router, Redirect, useState, axios, AsyncStorage, validateEmail, validatePassword } from "@/utils/commonImports";
+import { FormField, CustomButton } from "@/utils/commonImports";
 
 export const useLogin = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -140,6 +134,3 @@ export const useSignup = () => {
     signUpAndFetchUser
   };
 };
-
-
-export { images, Link, router, FormField, CustomButton, axios, AsyncStorage, Redirect };

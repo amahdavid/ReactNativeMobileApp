@@ -8,13 +8,14 @@ import {
   ImageSourcePropType,
   RefreshControl,
   FlatList,
+  Alert
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Video, ResizeMode } from "expo-av";
-import { router, Tabs, Redirect, Stack } from "expo-router";
+import { router, Tabs, Redirect, Stack, Link } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
 import axios from "axios";
@@ -29,6 +30,8 @@ import SearchInput from "@/components/SearchInput";
 import useFetchData from "@/hooks/dataHook";
 import InfoBox from "@/components/InfoBox";
 import { icons, images } from "@/constants";
+import { validateEmail, validatePassword } from "./validation";
+import { useSignup, useLogin } from "./authUtils";
 
 // Module Exports for React and React Native Components
 export {
@@ -44,10 +47,11 @@ export {
   AsyncStorage,
   RefreshControl,
   FlatList,
+  Alert
 };
 
 // Module Exports for Expo Components
-export { Video, ResizeMode, router, Tabs, Stack, Redirect, StatusBar };
+export { Video, ResizeMode, router, Tabs, Stack, Redirect, StatusBar, Link };
 
 // Module Exports for Axios
 export { axios };
@@ -64,4 +68,8 @@ export {
   useFetchData,
   icons,
   images,
+  validateEmail,
+  validatePassword,
+  useSignup,
+  useLogin
 };
