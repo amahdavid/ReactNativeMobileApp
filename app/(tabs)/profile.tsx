@@ -1,13 +1,5 @@
-import { View, Text, FlatList, TouchableOpacity, Image } from "react-native";
-import React, { useEffect, useState } from "react";
-import { Link, router } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
-import EmptyState from "@/components/EmptyState";
-import PostCard from "@/components/PostCard";
-import { AsyncStorage, images } from "@/utils/authUtils";
-import { icons } from "@/constants";
-import InfoBox from "@/components/InfoBox";
-import useFetchData from "@/hooks/dataHook";
+import { View, FlatList, TouchableOpacity, Image, router, SafeAreaView, AsyncStorage } from "@/utils/commonImports";
+import { EmptyState, PostCard, InfoBox, useFetchData, images, icons } from "@/utils/commonImports";
 
 const Profile = () => {
   const { data } = useFetchData();

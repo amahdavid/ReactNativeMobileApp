@@ -1,12 +1,21 @@
 // Module Imports
-import { View, Text, ScrollView, TouchableOpacity, Image, ImageSourcePropType, RefreshControl, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  ImageSourcePropType,
+  RefreshControl,
+  FlatList,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Video, ResizeMode } from "expo-av";
 import { router, Tabs, Redirect } from "expo-router";
-import { StatusBar } from 'expo-status-bar';
+import { StatusBar } from "expo-status-bar";
 
 import axios from "axios";
 
@@ -18,6 +27,7 @@ import EmptyState from "@/components/EmptyState";
 import Trending from "@/components/Trending";
 import SearchInput from "@/components/SearchInput";
 import useFetchData from "@/hooks/dataHook";
+import InfoBox from "@/components/InfoBox";
 import { icons, images } from "@/constants";
 
 // Module Exports for React and React Native Components
@@ -43,4 +53,15 @@ export { Video, ResizeMode, router, Tabs, Redirect, StatusBar };
 export { axios };
 
 // Local Component Exports
-export { FormField, CustomButton, PostCard, EmptyState, Trending, SearchInput, useFetchData, icons, images };
+export {
+  FormField,
+  CustomButton,
+  PostCard,
+  EmptyState,
+  Trending,
+  SearchInput,
+  InfoBox,
+  useFetchData,
+  icons,
+  images,
+};
