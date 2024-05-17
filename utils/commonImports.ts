@@ -14,7 +14,7 @@ import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Video, ResizeMode } from "expo-av";
-import { router, Tabs, Redirect } from "expo-router";
+import { router, Tabs, Redirect, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
 import axios from "axios";
@@ -47,7 +47,7 @@ export {
 };
 
 // Module Exports for Expo Components
-export { Video, ResizeMode, router, Tabs, Redirect, StatusBar };
+export { Video, ResizeMode, router, Tabs, Stack, Redirect, StatusBar };
 
 // Module Exports for Axios
 export { axios };
