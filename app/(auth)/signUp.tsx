@@ -1,5 +1,6 @@
-import { SafeAreaView, ScrollView, View, Text, Image, images, Link, useSignup } from "@/utils/commonImports";
+import { SafeAreaView, ScrollView, View, Text, Image, images, Link } from "@/utils/commonImports";
 import { FormField, CustomButton } from "@/utils/commonImports";
+import { useSignup } from "@/utils/authUtils";
 
 const SignUp = () => {
   const { isSubmitting, form, handleChangeEmail, handleChangeText, signUpAndFetchUser } =

@@ -1,5 +1,6 @@
-import { SafeAreaView, View, Text, ScrollView, Image, images, useLogin, Link } from "@/utils/commonImports";
+import { SafeAreaView, View, Text, ScrollView, Image, images, Link } from "@/utils/commonImports";
 import { FormField, CustomButton } from "@/utils/commonImports";
+import { useLogin } from "@/utils/authUtils";
 
 const Login = () => {
   const {

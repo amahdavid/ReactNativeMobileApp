@@ -15,10 +15,12 @@ import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Video, ResizeMode } from "expo-av";
-import { router, Tabs, Redirect, Stack, Link, useLocalSearchParams } from "expo-router";
+import { SplashScreen, router, Tabs, Redirect, Stack, Link, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { useFonts } from "expo-font";
 
 import axios from "axios";
+import jwt, { jwtDecode } from "jwt-decode";
 
 // Local Component Imports
 import FormField from "@/components/FormField";
@@ -52,10 +54,10 @@ export {
 };
 
 // Module Exports for Expo Components
-export { Video, ResizeMode, router, Tabs, Stack, Redirect, StatusBar, Link, useLocalSearchParams };
+export { Video, ResizeMode, router, Tabs, Stack, Redirect, StatusBar, Link, useLocalSearchParams, useFonts, SplashScreen };
 
-// Module Exports for Axios
-export { axios };
+// Module Exports for Others
+export { axios, jwt, jwtDecode};
 
 // Local Component Exports
 export {
@@ -71,6 +73,4 @@ export {
   images,
   validateEmail,
   validatePassword,
-  useSignup,
-  useLogin
 };

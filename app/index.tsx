@@ -1,9 +1,18 @@
-import { Text, View, Image, ScrollView } from "react-native";
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useEffect } from "react";
-import jwt, { jwtDecode } from "jwt-decode";
-import { CustomButton, AsyncStorage, images, router, Redirect } from "@/utils/authUtils"
+import {
+  Text,
+  View,
+  Image,
+  ScrollView,
+  StatusBar,
+  SafeAreaView,
+  useEffect,
+  jwt,
+  jwtDecode,
+  AsyncStorage,
+  router,
+  images,
+  CustomButton,
+} from "@/utils/commonImports";
 
 export default function App() {
   useEffect(() => {
@@ -14,16 +23,23 @@ export default function App() {
     try {
       const token = await AsyncStorage.getItem("token");
       if (token) {
-        const response = await fetch("http://localhost:3000/api/validate-token", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          "http://localhost:3000/api/validate-token",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         if (response.ok) {
           const decodedToken = jwtDecode(token) as jwt.JwtPayload;
-          if (decodedToken && decodedToken.exp && decodedToken.exp * 1000 < Date.now()) {
+          if (
+            decodedToken &&
+            decodedToken.exp &&
+            decodedToken.exp * 1000 < Date.now()
+          ) {
             await AsyncStorage.removeItem("token");
             router.replace("/login");
           } else {

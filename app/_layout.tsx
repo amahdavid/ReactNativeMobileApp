@@ -1,9 +1,5 @@
-import { StyleSheet, Text, View } from "react-native";
-import { StatusBar } from "expo-status-bar";
-import React, { useEffect } from "react";
-import { SplashScreen, Stack } from "expo-router";
-import { useFonts } from "expo-font";
 import "react-native-reanimated";
+import { StatusBar, React, useEffect, SplashScreen, Stack, useFonts } from "@/utils/commonImports";
 
 SplashScreen.preventAutoHideAsync();
 
