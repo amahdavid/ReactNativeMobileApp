@@ -1,10 +1,5 @@
-import { View, Text, SafeAreaView, FlatList } from "react-native";
-import React, { useEffect, useState } from "react";
-import { useLocalSearchParams } from "expo-router";
-import PostCard from "@/components/PostCard";
-import SearchInput from "@/components/SearchInput";
-import EmptyState from "@/components/EmptyState";
-import axios from "axios";
+import { View, Text, SafeAreaView, FlatList, useEffect, useState, React, axios, useLocalSearchParams } from "@/utils/commonImports";
+import { PostCard, SearchInput, EmptyState } from "@/utils/commonImports";
 
 const Search = () => {
   const { query } = useLocalSearchParams();
