@@ -1,8 +1,4 @@
-import { View, Text, Image } from "react-native";
-import React from "react";
-import { images } from "@/constants";
-import CustomButton from "./CustomButton";
-import { router } from "expo-router";
+import { View, Text, Image, CustomButton, router, images } from "@/utils/commonImports";
 
 const EmptyState = ({ title, description }: { title: string, description: string }) => {
   return (
