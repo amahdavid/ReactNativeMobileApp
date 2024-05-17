@@ -1,7 +1,4 @@
-import { View, Text, Image, TouchableOpacity } from "react-native";
-import React from "react";
-import { icons } from "@/constants";
-import { ResizeMode, Video } from "expo-av";
+import { View, Text, Image, TouchableOpacity, React, icons, ResizeMode, Video } from "@/utils/commonImports";
 
 interface Post {
   title: string;
