@@ -1,4 +1,4 @@
-import {FormField, CustomButton } from "@/utils/commonImports"
+import { FormField, CustomButton } from "@/utils/commonImports"
 import { SafeAreaView, ScrollView, Text, React, axios, AsyncStorage, router } from "@/utils/commonImports"
 
 const Create = () => {

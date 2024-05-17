@@ -1,18 +1,21 @@
 // Module Imports
-import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Image, ImageSourcePropType } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState } from "react";
-import { Video, ResizeMode } from "expo-av";
-import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { router } from "expo-router";
+
+import { Video, ResizeMode } from "expo-av";
+import { router, Tabs, Redirect } from "expo-router";
+import { StatusBar } from 'expo-status-bar';
+
+import axios from "axios";
 
 // Local Component Imports
 import FormField from "@/components/FormField";
 import CustomButton from "@/components/CustomButton";
 import { icons } from "@/constants";
 
-// Module Exports
+// Module Exports for React and React Native Components
 export {
   View,
   Text,
@@ -22,12 +25,15 @@ export {
   SafeAreaView,
   React,
   useState,
-  Video,
-  ResizeMode,
-  axios,
-  AsyncStorage,
-  router,
+  ImageSourcePropType,
+  AsyncStorage
 };
+
+// Module Exports for Expo Components
+export { Video, ResizeMode, router, Tabs, Redirect, StatusBar };
+
+// Module Exports for Axios
+export { axios };
 
 // Local Component Exports
 export { FormField, CustomButton, icons };
