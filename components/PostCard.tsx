@@ -1,4 +1,7 @@
-import { View, Text, Image, TouchableOpacity, React, icons, ResizeMode, Video } from "@/utils/commonImports";
+import { View, Text, Image, TouchableOpacity } from "@/utils/commonImports";
+import React from "react";
+import { icons } from "@/constants";
+import { ResizeMode, Video } from "expo-av";
 
 interface Post {
   title: string;

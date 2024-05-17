@@ -1,4 +1,4 @@
-import { View, Text } from "@/utils/commonImports";
+import { View, Text } from "react-native";
 
 interface InfoBoxProps {
   title: string;

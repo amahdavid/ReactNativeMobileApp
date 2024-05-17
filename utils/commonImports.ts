@@ -10,7 +10,8 @@ import {
   FlatList,
   Alert,
   KeyboardTypeOptions,
-  TextInput
+  TextInput,
+  ImageBackground
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState, useEffect } from "react";
@@ -53,7 +54,8 @@ export {
   FlatList,
   Alert,
   KeyboardTypeOptions,
-  TextInput
+  TextInput,
+  ImageBackground
 };
 
 // Module Exports for Expo Components

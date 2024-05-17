@@ -1,4 +1,5 @@
-import { TouchableOpacity, Text, React } from "@/utils/commonImports";
+import { TouchableOpacity, Text } from "react-native";
+import React from "react";
 
 const CustomButton = ({
   title,

@@ -1,15 +1,13 @@
 import {
   View,
-  Text,
   TextInput,
   TouchableOpacity,
   Alert,
   Image,
-  router,
-  usePathname,
-  useState,
-  icons
 } from "@/utils/commonImports";
+import { router, usePathname } from "expo-router";
+import React, { useState } from "react";
+import { icons } from "@/constants";
 
 const SearchInput = ({ initialQuery }: { initialQuery: string }) => {
   const pathname = usePathname();
