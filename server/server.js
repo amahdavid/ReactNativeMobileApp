@@ -33,13 +33,23 @@ const connection = mysql.createConnection({
   database: "ReactMobileAppProject",
 });
 
+const validationRules = [
+  { field: 'firstName', message: 'First name is required' },
+  { field: 'lastName', message: 'Last name is required' },
+  { field: 'email', message: 'Email is required' },
+  { field: 'password', message: 'Password is required' }
+];
+
 app.post("/api/signup", async (req, res) => {
   try {
-    const { firstName, lastName, email, password } = req.body;
+    const missingFields = validationRules
+      .filter(rule => !req.body[rule.field])
+      .map(rule => rule.message);
 
-    if (!firstName || !lastName || !email || !password) {
-      return res.status(400).send("Please fill all the fields");
+    if (missingFields.length > 0) {
+      return res.status(400).send(missingFields.join(', '));
     }
+    const { firstName, lastName, email, password } = req.body;
 
     if (!validateEmail(email)) {
       return res.status(400).send("Invalid email address");
@@ -334,6 +344,8 @@ app.get("/api/posts", (req, res) => {
     return res.status(500).json({ error: "Server error" });
   }
 });
+
+module.exports = { app, connection, generateToken, validateEmail, validatePassword };
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

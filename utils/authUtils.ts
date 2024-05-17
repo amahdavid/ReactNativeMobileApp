@@ -131,6 +131,7 @@ export const useSignup = () => {
     form,
     handleChangeEmail,
     handleChangeText,
-    signUpAndFetchUser
+    signUpAndFetchUser,
+    submit
   };
 };
