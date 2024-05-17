@@ -1,12 +1,5 @@
-import { View, Text, ScrollView, Image, Alert } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  images,
-  Link,
-  FormField,
-  CustomButton,
-  useSignup,
-} from "@/utils/authUtils";
+import { SafeAreaView, ScrollView, View, Text, Image, images, Link, useSignup } from "@/utils/commonImports";
+import { FormField, CustomButton } from "@/utils/commonImports";
 
 const SignUp = () => {
   const { isSubmitting, form, handleChangeEmail, handleChangeText, signUpAndFetchUser } =
