@@ -5,10 +5,11 @@ import {
   TouchableOpacity,
   Alert,
   Image,
-} from "react-native";
-import { router, usePathname } from "expo-router";
-import React, { useState } from "react";
-import { icons } from "@/constants";
+  router,
+  usePathname,
+  useState,
+  icons
+} from "@/utils/commonImports";
 
 const SearchInput = ({ initialQuery }: { initialQuery: string }) => {
   const pathname = usePathname();

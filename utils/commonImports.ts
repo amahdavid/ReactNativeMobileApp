@@ -17,7 +17,7 @@ import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Video, ResizeMode } from "expo-av";
-import { SplashScreen, router, Tabs, Redirect, Stack, Link, useLocalSearchParams } from "expo-router";
+import { SplashScreen, router, Tabs, Redirect, Stack, Link, useLocalSearchParams, usePathname } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
 
@@ -57,7 +57,7 @@ export {
 };
 
 // Module Exports for Expo Components
-export { Video, ResizeMode, router, Tabs, Stack, Redirect, StatusBar, Link, useLocalSearchParams, useFonts, SplashScreen };
+export { Video, ResizeMode, router, Tabs, Stack, Redirect, StatusBar, Link, useLocalSearchParams, useFonts, SplashScreen, usePathname };
 
 // Module Exports for Others
 export { axios, jwt, jwtDecode};
