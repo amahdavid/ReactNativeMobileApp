@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-const uuid = require("uuid");
+const { v4: uuidv4 } = require("uuid");
 
 const app = express();
 const port = 3000;
@@ -40,6 +40,11 @@ const validationRules = [
   { field: 'password', message: 'Password is required' }
 ];
 
+app.get('/uuid', (req, res) => {
+  res.send({ id: uuidv4() });
+});
+
+
 app.post("/api/signup", async (req, res) => {
   try {
     const missingFields = validationRules
@@ -64,7 +69,7 @@ app.post("/api/signup", async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const userId = uuid.v4();
+    const userId = uuidv4();
 
     const emailExistsQuery = `SELECT * FROM users WHERE email = ?`;
     connection.query(emailExistsQuery, [email], (err, result) => {
@@ -178,7 +183,7 @@ app.post("/api/create-post/:userId", (req, res) => {
             .json({ error: "Video already posted by the user" });
         }
 
-        const postId = uuid.v4();
+        const postId = uuidv4();
         const createPostQuery = `INSERT INTO posts (id, user_id, title, thumbnail_url, description, video_url) VALUES (?, ?, ?, ?, ?, ?)`;
         connection.query(
           createPostQuery,
