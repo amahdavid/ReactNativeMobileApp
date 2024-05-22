@@ -7,12 +7,25 @@ import {
   generateToken,
 } from "@/server/server";
 
-import { v4 as uuidv4 } from 'uuid';
+let server: any;
 
-test('uuid import test', () => {
-  const id = uuidv4();
-  console.log(id);
-  expect(id).toBeDefined();
+beforeAll((done) => {
+  server = app.listen(0, () => {
+    console.log(
+      `Server is running on http://localhost:${server.address().port}`
+    );
+    done();
+  });
+});
+
+afterAll((done) => {
+  server.close(() => {
+    console.log("Server closed");
+    connection.end(() => {
+      console.log("Database connection closed");
+      done();
+    });
+  });
 });
 
 test("SignUp_MissingPassword_ReturnsBadRequest", async () => {
