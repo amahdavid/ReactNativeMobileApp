@@ -13,6 +13,7 @@
   },
   "jest": {
     "preset": "jest-expo",
+    "testEnvironment": "node",
     "testMatch": [
       "**/*.test.ts"
     ],
@@ -26,43 +27,76 @@
     },
     "moduleNameMapper": {
       "uuid": "<rootDir>/node_modules/uuid/dist/v4.js"
-    }
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!(uuid|@react-native|react-native|expo-modules-core|expo-modules)/)"
+    ]
   },
   "babel": {
     "presets": [
+      "babel-preset-expo",
       "@babel/preset-env",
       "@babel/preset-react",
       "@babel/preset-typescript"
+    ],
+    "plugins": [
+      "nativewind/babel",
+      "@babel/plugin-transform-runtime",
+      [
+        "@babel/plugin-proposal-class-properties",
+        {
+          "loose": true
+        }
+      ],
+      [
+        "@babel/plugin-proposal-private-methods",
+        {
+          "loose": true
+        }
+      ],
+      [
+        "@babel/plugin-proposal-private-property-in-object",
+        {
+          "loose": true
+        }
+      ]
     ]
   },
   "dependencies": {
+    "@babel/cli": "^7.24.6",
     "@expo/vector-icons": "^14.0.0",
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-navigation/native": "^6.0.2",
     "@types/mysql": "^2.15.26",
+    "anymatch": "^3.1.3",
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
+    "braces": "^3.0.3",
+    "chokidar": "^3.6.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
-    "expo": "~51.0.2",
-    "expo-av": "^14.0.4",
+    "expo": "~51.0.8",
+    "expo-av": "~14.0.5",
     "expo-constants": "~16.0.1",
     "expo-font": "~12.0.5",
     "expo-linking": "~6.3.1",
-    "expo-router": "~3.5.11",
+    "expo-router": "~3.5.14",
     "expo-splash-screen": "~0.27.4",
     "expo-status-bar": "~1.12.1",
     "expo-system-ui": "~3.0.4",
     "expo-web-browser": "~13.0.3",
     "express": "^4.19.2",
+    "glob-parent": "^6.0.2",
     "interpolation": "^1.0.0",
+    "json5": "^2.2.3",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
+    "micromatch": "^4.0.7",
     "mysql": "^2.18.1",
     "nativewind": "^2.0.11",
-    "react": "18.2.0",
+    "react": "^18.2.0",
     "react-dom": "18.2.0",
-    "react-native": "0.74.1",
+    "react-native": "^0.74.1",
     "react-native-animatable": "^1.4.0",
     "react-native-appwrite": "^0.3.0",
     "react-native-gesture-handler": "~2.16.1",
@@ -72,13 +106,17 @@
     "react-native-screens": "3.31.1",
     "react-native-url-polyfill": "^2.0.0",
     "react-native-web": "~0.19.10",
-    "react-native-webview": "^13.10.2",
+    "react-native-webview": "13.8.6",
     "react-native-youtube": "^2.0.2",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.5",
-    "@babel/preset-env": "^7.24.5",
+    "@babel/core": "^7.24.6",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-proposal-private-methods": "^7.18.6",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@babel/preset-env": "^7.24.6",
+    "@babel/preset-react": "^7.24.1",
     "@babel/preset-typescript": "^7.24.1",
     "@testing-library/react-native": "^12.5.0",
     "@types/bcrypt": "^5.0.2",
@@ -94,8 +132,9 @@
     "@wdio/cli": "^8.36.1",
     "babel-jest": "^29.7.0",
     "esm": "^3.2.25",
+    "expo-module-scripts": "^3.5.1",
     "jest": "^29.7.0",
-    "jest-expo": "~51.0.1",
+    "jest-expo": "~51.0.2",
     "react-test-renderer": "^18.2.0",
     "supertest": "^7.0.0",
     "tailwindcss": "^3.3.2",

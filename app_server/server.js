@@ -5,7 +5,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const { v4: uuidv4 } = require("uuid");
-
 const app = express();
 const port = 3000;
 const secretKey = crypto.randomBytes(64).toString("hex");
@@ -39,11 +38,6 @@ const validationRules = [
   { field: 'email', message: 'Email is required' },
   { field: 'password', message: 'Password is required' }
 ];
-
-app.get('/uuid', (req, res) => {
-  res.send({ id: uuidv4() });
-});
-
 
 app.post("/api/signup", async (req, res) => {
   try {

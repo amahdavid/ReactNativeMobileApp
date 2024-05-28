@@ -11,6 +11,6 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
-    "server/serverConfig.js"
+    "app_server/serverConfig.js"
 , "tests/server_unit_test/narrow.test.ts"  ]
 }
