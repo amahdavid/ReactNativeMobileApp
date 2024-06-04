@@ -24,8 +24,15 @@ afterAll((done) => {
   });
 });
 
+test("testing uuid", async () => {
+  const response = await request(app).get("/uuid");
+  const responseBody = response.body;
+  expect(response.status).toBe(200);
+});
+
+
 test("SignUp_ValidData_HappyPath", async () => {
-  
+
   const testData = 
   {
     firstName: generateRandomString(8),

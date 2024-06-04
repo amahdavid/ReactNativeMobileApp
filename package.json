@@ -8,7 +8,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "test": "jest",
+    "test": "mocha",
     "lint": "expo lint"
   },
   "jest": {
@@ -26,7 +26,7 @@
       "^.+\\.[jt]sx?$": "babel-jest"
     },
     "moduleNameMapper": {
-      "uuid": "<rootDir>/node_modules/uuid/dist/v4.js"
+      "uuid": "<rootDir>/node_modules/uuid"
     },
     "transformIgnorePatterns": [
       "node_modules/(?!(uuid|@react-native|react-native|expo-modules-core|expo-modules)/)"

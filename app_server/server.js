@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const { v4: uuidv4 } = require("uuid");
 const app = express();
-const port = 3000;
+const port = 4000;
 const secretKey = crypto.randomBytes(64).toString("hex");
 
 app.use(bodyParser.json());
@@ -33,20 +33,33 @@ const connection = mysql.createConnection({
 });
 
 const validationRules = [
-  { field: 'firstName', message: 'First name is required' },
-  { field: 'lastName', message: 'Last name is required' },
-  { field: 'email', message: 'Email is required' },
-  { field: 'password', message: 'Password is required' }
+  { field: "firstName", message: "First name is required" },
+  { field: "lastName", message: "Last name is required" },
+  { field: "email", message: "Email is required" },
+  { field: "password", message: "Password is required" },
 ];
+
+app.get("/uuid", (req, res) => {
+  try {
+    const id = uuidv4();
+    console.log("Generated UUID:", id); // Log the generated UUID
+    res.status(200).send({ id });
+  } catch (error) {
+    console.error("Error generating UUID:", error); // Log the error
+    res
+      .status(500)
+      .send({ message: "An error occurred while generating the UUID" });
+  }
+});
 
 app.post("/api/signup", async (req, res) => {
   try {
     const missingFields = validationRules
-      .filter(rule => !req.body[rule.field])
-      .map(rule => rule.message);
+      .filter((rule) => !req.body[rule.field])
+      .map((rule) => rule.message);
 
     if (missingFields.length > 0) {
-      return res.status(400).send(missingFields.join(', '));
+      return res.status(400).send(missingFields.join(", "));
     }
     const { firstName, lastName, email, password } = req.body;
 
@@ -344,7 +357,13 @@ app.get("/api/posts", (req, res) => {
   }
 });
 
-module.exports = { app, connection, generateToken, validateEmail, validatePassword };
+module.exports = {
+  app,
+  connection,
+  generateToken,
+  validateEmail,
+  validatePassword,
+};
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
