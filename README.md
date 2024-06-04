@@ -5,3 +5,6 @@
 - If IOS simulator crashes unexpectedly, add this "import 'react-native-reanimated' in the root layout file
 - if having issues with unresolved files, delete the "node_modules" directory and reinstall with "npm i"
 - if having issues with npm command try this "npm config set legacy-peer-deps true"
+- I was having major issues with UUID packages and Jest, I changed my moduleNameMapper in my package.json file to this "moduleNameMapper": {
+      "uuid": "<rootDir>/node_modules/uuid"
+    }
