@@ -6,6 +6,7 @@ module.exports = function (api) {
       '@babel/preset-env',
       '@babel/preset-react',
       '@babel/preset-typescript',
+      'module:metro-react-native-babel-preset'
     ],
     plugins: [
       'nativewind/babel',

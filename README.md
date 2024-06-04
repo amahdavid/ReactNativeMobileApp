@@ -4,3 +4,4 @@
 - If node version keeps reverting, run this command "nvm alias default v<version number>"
 - If IOS simulator crashes unexpectedly, add this "import 'react-native-reanimated' in the root layout file
 - if having issues with unresolved files, delete the "node_modules" directory and reinstall with "npm i"
+- if having issues with npm command try this "npm config set legacy-peer-deps true"

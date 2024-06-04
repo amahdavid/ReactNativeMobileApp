@@ -32,36 +32,6 @@
       "node_modules/(?!(uuid|@react-native|react-native|expo-modules-core|expo-modules)/)"
     ]
   },
-  "babel": {
-    "presets": [
-      "babel-preset-expo",
-      "@babel/preset-env",
-      "@babel/preset-react",
-      "@babel/preset-typescript"
-    ],
-    "plugins": [
-      "nativewind/babel",
-      "@babel/plugin-transform-runtime",
-      [
-        "@babel/plugin-proposal-class-properties",
-        {
-          "loose": true
-        }
-      ],
-      [
-        "@babel/plugin-proposal-private-methods",
-        {
-          "loose": true
-        }
-      ],
-      [
-        "@babel/plugin-proposal-private-property-in-object",
-        {
-          "loose": true
-        }
-      ]
-    ]
-  },
   "dependencies": {
     "@babel/cli": "^7.24.6",
     "@expo/vector-icons": "^14.0.0",
@@ -75,12 +45,12 @@
     "chokidar": "^3.6.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
-    "expo": "~51.0.8",
+    "expo": "~51.0.9",
     "expo-av": "~14.0.5",
-    "expo-constants": "~16.0.1",
-    "expo-font": "~12.0.5",
+    "expo-constants": "~16.0.2",
+    "expo-font": "~12.0.6",
     "expo-linking": "~6.3.1",
-    "expo-router": "~3.5.14",
+    "expo-router": "^3.5.15",
     "expo-splash-screen": "~0.27.4",
     "expo-status-bar": "~1.12.1",
     "expo-system-ui": "~3.0.4",
@@ -93,7 +63,7 @@
     "jwt-decode": "^4.0.0",
     "micromatch": "^4.0.7",
     "mysql": "^2.18.1",
-    "nativewind": "^2.0.11",
+    "nativewind": "^4.0.36",
     "react": "^18.2.0",
     "react-dom": "18.2.0",
     "react-native": "^0.74.1",
@@ -115,9 +85,10 @@
     "@babel/plugin-proposal-class-properties": "^7.18.6",
     "@babel/plugin-proposal-private-methods": "^7.18.6",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@babel/plugin-transform-runtime": "^7.24.6",
     "@babel/preset-env": "^7.24.6",
-    "@babel/preset-react": "^7.24.1",
-    "@babel/preset-typescript": "^7.24.1",
+    "@babel/preset-react": "^7.24.6",
+    "@babel/preset-typescript": "^7.24.6",
     "@testing-library/react-native": "^12.5.0",
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
@@ -131,10 +102,12 @@
     "@wdio/appium-service": "^8.36.1",
     "@wdio/cli": "^8.36.1",
     "babel-jest": "^29.7.0",
+    "babel-preset-expo": "^11.0.6",
     "esm": "^3.2.25",
     "expo-module-scripts": "^3.5.1",
     "jest": "^29.7.0",
     "jest-expo": "~51.0.2",
+    "metro-react-native-babel-preset": "^0.77.0",
     "react-test-renderer": "^18.2.0",
     "supertest": "^7.0.0",
     "tailwindcss": "^3.3.2",
