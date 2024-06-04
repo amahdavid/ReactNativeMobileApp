@@ -2,6 +2,7 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
+    "module": "commonjs", // Ensures compatibility with Jest
     "paths": {
       "@/*": ["./*"]
     }
@@ -11,6 +12,7 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
-    "app_server/serverConfig.js"
-, "tests/server_unit_test/narrow.test.ts"  ]
+    "app_server/serverConfig.js",
+    "tests/server_unit_test/narrow.test.ts"
+  ]
 }

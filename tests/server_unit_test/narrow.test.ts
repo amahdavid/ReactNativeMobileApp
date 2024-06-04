@@ -1,5 +1,5 @@
 import request from "supertest";
-import { app, connection } from "@/app_server/server";
+import { app, connection } from "../../app_server/server";
 import {
   generateRandomString,
   generateRandomEmail,
@@ -25,7 +25,9 @@ afterAll((done) => {
 });
 
 test("SignUp_ValidData_HappyPath", async () => {
-  const testData = {
+  
+  const testData = 
+  {
     firstName: generateRandomString(8),
     lastName: generateRandomString(8),
     email: generateRandomEmail(),
