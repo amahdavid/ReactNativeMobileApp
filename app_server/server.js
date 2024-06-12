@@ -42,10 +42,10 @@ const validationRules = [
 app.get("/uuid", (req, res) => {
   try {
     const id = uuidv4();
-    console.log("Generated UUID:", id); // Log the generated UUID
+    console.log("Generated UUID:", id);
     res.status(200).send({ id });
   } catch (error) {
-    console.error("Error generating UUID:", error); // Log the error
+    console.error("Error generating UUID:", error);
     res
       .status(500)
       .send({ message: "An error occurred while generating the UUID" });
@@ -122,9 +122,12 @@ app.post("/api/signup", async (req, res) => {
 app.post("/api/signin", async (req, res) => {
   try {
     const { email, password } = req.body;
+    const missingFields = validationRules
+      .filter(rule => !req.body[rule.field])
+      .map(rule => ({ field: rule.field, message: rule.message }));
 
-    if (!email || !password) {
-      return res.status(400).send("Please fill all the fields");
+    if (missingFields.length > 0) {
+      return res.status(400).json({ errors: missingFields });
     }
 
     const getUserQuery = `SELECT * FROM users WHERE email = ?`;
@@ -149,6 +152,7 @@ app.post("/api/signin", async (req, res) => {
           return res.status(401).send("Invalid token");
         }
       });
+
       const response = {
         userId: user.id,
         firstName: user.firstName,

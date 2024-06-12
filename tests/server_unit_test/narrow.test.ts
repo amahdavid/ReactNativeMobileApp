@@ -24,17 +24,8 @@ afterAll((done) => {
   });
 });
 
-test("testing uuid", async () => {
-  const response = await request(app).get("/uuid");
-  const responseBody = response.body;
-  expect(response.status).toBe(200);
-});
-
-
 test("SignUp_ValidData_HappyPath", async () => {
-
-  const testData = 
-  {
+  const testData = {
     firstName: generateRandomString(8),
     lastName: generateRandomString(8),
     email: generateRandomEmail(),
@@ -63,4 +54,40 @@ test("SignUp_MissingPassword_ReturnsBadRequest", async () => {
     });
   expect(response.status).toBe(400);
   expect(response.text).toBe("Password is required");
+});
+
+test("SignUp_MissingEmail_ReturnsBadRequest", async () => {
+  const response = await request(app)
+    .post("/api/signup")
+    .send({
+      firstName: generateRandomString(8),
+      lastName: generateRandomString(8),
+      password: generateRandomPassword(),
+    });
+  expect(response.status).toBe(400);
+  expect(response.text).toBe("Email is required");
+});
+
+test("SignUp_MissingFirstName_ReturnsBadRequest", async () => {
+  const response = await request(app)
+    .post("/api/signup")
+    .send({
+      lastName: generateRandomString(8),
+      email: generateRandomEmail(),
+      password: generateRandomPassword(),
+    });
+  expect(response.status).toBe(400);
+  expect(response.text).toBe("First name is required");
+});
+
+test("SignUp_MissingLastName_ReturnsBadRequest", async () => {
+  const response = await request(app)
+    .post("/api/signup")
+    .send({
+      firstName: generateRandomString(8),
+      email: generateRandomEmail(),
+      password: generateRandomPassword(),
+    });
+  expect(response.status).toBe(400);
+  expect(response.text).toBe("Last name is required");
 });
