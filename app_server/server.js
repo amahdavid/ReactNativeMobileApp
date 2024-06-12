@@ -39,6 +39,11 @@ const validationRules = [
   { field: "password", message: "Password is required" },
 ];
 
+const signInValidationRules = [
+  { field: "email", message: "Email is required" },
+  { field: "password", message: "Password is required" },
+];
+
 app.get("/uuid", (req, res) => {
   try {
     const id = uuidv4();
@@ -122,7 +127,7 @@ app.post("/api/signup", async (req, res) => {
 app.post("/api/signin", async (req, res) => {
   try {
     const { email, password } = req.body;
-    const missingFields = validationRules
+    const missingFields = signInValidationRules
       .filter(rule => !req.body[rule.field])
       .map(rule => ({ field: rule.field, message: rule.message }));
 

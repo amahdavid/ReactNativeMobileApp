@@ -91,3 +91,38 @@ test("SignUp_MissingLastName_ReturnsBadRequest", async () => {
   expect(response.status).toBe(400);
   expect(response.text).toBe("Last name is required");
 });
+
+test("SignUp_InvalidEmail_ReturnsBadRequest", async () => {
+  const response = await request(app)
+    .post("/api/signup")
+    .send({
+      firstName: generateRandomString(8),
+      lastName: generateRandomString(8),
+      email: "invalidemail",
+      password: generateRandomPassword(),
+    });
+  expect(response.status).toBe(400);
+  expect(response.text).toBe("Invalid email address");
+});
+
+test("SignUp_BadPassword_ReturnsBadRequest", async () => {
+  const response = await request(app)
+    .post("/api/signup")
+    .send({
+      firstName: generateRandomString(8),
+      lastName: generateRandomString(8),
+      email: generateRandomEmail(),
+      password: "123",
+    });
+  expect(response.status).toBe(400);
+  expect(response.text).toBe("Password must contain at least 8 characters, including letters and numbers");
+});
+
+test("SignIn_MissingEmail_ReturnsBadRequest", async () => {
+  const response = await request(app)
+    .post("/api/signin")
+    .send({
+      password: generateRandomPassword(),
+    });
+  expect(response.status).toBe(400);
+});
