@@ -7,23 +7,23 @@ This project is a full-stack web application that allows users to sign up, log i
 - Token-based Security: Secure user sessions using JWT tokens.
 
 # Tech Stack
-## FrontEnd
+### FrontEnd
 - React: JavaScript library for building user interfaces.
 - React Router: For routing in React applications.
 - Axios: Promise-based HTTP client for the browser and Node.js.
 
-## Backend
+### Backend
 - Node.js: JavaScript runtime built on Chrome's V8 engine.
 - Express.js: Web application framework for Node.js.
 - MySQL: Relational database for storing user and video data.
 
-## Testing
+### Testing
 - Jest: JavaScript testing framework for testing back-end and front-end code.
 
-## Authentication
+### Authentication
 - JWT (JSON Web Tokens): For securely transmitting information between parties as a JSON object.
 
-## CI/CD
+### CI/CD
 - TBD
 
 # Demo
